@@ -25,6 +25,11 @@ async function requireAdmin() {
   return user;
 }
 
+function parseDisplayOrder(value: FormDataEntryValue | null) {
+  const parsed = Number.parseInt(String(value ?? "0"), 10);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
 export async function updateOrderStatusAction(orderId: string, status: string) {
   try {
     await requireAdmin();
@@ -278,7 +283,10 @@ export async function createCollectionAction(formData: FormData) {
     const title = (formData.get("title") as string)?.trim();
     const handle = (formData.get("handle") as string)?.trim();
     const description = (formData.get("description") as string)?.trim();
+    const subtitle = (formData.get("subtitle") as string)?.trim() || null;
     const image = (formData.get("image") as string)?.trim();
+    const showOnHomepage = formData.get("showOnHomepage") === "true";
+    const displayOrder = parseDisplayOrder(formData.get("displayOrder"));
 
     if (!title || !handle) {
       return { success: false, error: "ক্যাটাগরির শিরোনাম এবং হ্যান্ডেল প্রয়োজন।" };
@@ -290,10 +298,14 @@ export async function createCollectionAction(formData: FormData) {
       title,
       handle,
       description,
+      subtitle,
       image,
+      showOnHomepage,
+      displayOrder,
     });
 
     revalidatePath("/admin/collections");
+    revalidatePath("/", "layout");
     return { success: true, error: "" };
   } catch (err: any) {
     return { success: false, error: err.message || "ক্যাটাগরি তৈরি ব্যর্থ হয়েছে।" };
@@ -307,7 +319,10 @@ export async function updateCollectionAction(formData: FormData) {
     const title = (formData.get("title") as string)?.trim();
     const handle = (formData.get("handle") as string)?.trim();
     const description = (formData.get("description") as string)?.trim() || "";
+    const subtitle = (formData.get("subtitle") as string)?.trim() || null;
     const image = (formData.get("image") as string)?.trim() || "";
+    const showOnHomepage = formData.get("showOnHomepage") === "true";
+    const displayOrder = parseDisplayOrder(formData.get("displayOrder"));
 
     if (!id || !title || !handle) {
       return { success: false, error: "আইডি, শিরোনাম এবং হ্যান্ডেল আবশ্যক।" };
@@ -319,13 +334,16 @@ export async function updateCollectionAction(formData: FormData) {
         title,
         handle,
         description,
+        subtitle,
         image,
+        showOnHomepage,
+        displayOrder,
         updatedAt: new Date(),
       })
       .where(eq(collections.id, id));
 
     revalidatePath("/admin/collections");
-    revalidatePath("/");
+    revalidatePath("/", "layout");
     return { success: true, error: "" };
   } catch (err: any) {
     return { success: false, error: err.message || "ক্যাটাগরি আপডেট ব্যর্থ হয়েছে।" };
@@ -344,7 +362,7 @@ export async function toggleCollectionHomepageAction(
       .where(eq(collections.id, id));
 
     revalidatePath("/admin/collections");
-    revalidatePath("/");
+    revalidatePath("/", "layout");
     return { success: true, error: "" };
   } catch (err: any) {
     return { success: false, error: err.message || "আপডেট ব্যর্থ হয়েছে।" };
@@ -357,6 +375,7 @@ export async function deleteCollectionAction(id: string) {
     await db.delete(collections).where(eq(collections.id, id));
 
     revalidatePath("/admin/collections");
+    revalidatePath("/", "layout");
     return { success: true, error: "" };
   } catch (err: any) {
     return { success: false, error: err.message || "ক্যাটাগরি মোছা ব্যর্থ হয়েছে।" };
@@ -448,6 +467,24 @@ export async function deleteBlogAction(id: string) {
   }
 }
 
+async function resolveBannerImage(formData: FormData): Promise<string> {
+  let image = (formData.get("imageUrl") as string)?.trim() || "";
+  const imageFile = formData.get("image") as File | null;
+
+  if (imageFile && imageFile.size > 0) {
+    const ext = imageFile.name.split(".").pop() || "webp";
+    const key = `hero_banners/${crypto.randomUUID()}-${Date.now()}.${ext}`;
+    const buffer = Buffer.from(await imageFile.arrayBuffer());
+    image = await uploadObject({
+      key,
+      body: buffer,
+      contentType: imageFile.type || "image/webp",
+    });
+  }
+
+  return image;
+}
+
 export async function createHeroBannerAction(formData: FormData) {
   try {
     await requireAdmin();
@@ -455,7 +492,7 @@ export async function createHeroBannerAction(formData: FormData) {
     const highlight = (formData.get("highlight") as string)?.trim() || "";
     const subtitle = (formData.get("subtitle") as string)?.trim() || "";
     const link = (formData.get("link") as string)?.trim() || "/search";
-    const image = (formData.get("image") as string)?.trim() || "";
+    const image = await resolveBannerImage(formData);
 
     if (!image) {
       return { success: false, error: "ব্যানারের ছবি আবশ্যক।" };
@@ -487,7 +524,7 @@ export async function updateHeroBannerAction(formData: FormData) {
     const highlight = (formData.get("highlight") as string)?.trim() || "";
     const subtitle = (formData.get("subtitle") as string)?.trim() || "";
     const link = (formData.get("link") as string)?.trim() || "/search";
-    const image = (formData.get("image") as string)?.trim() || "";
+    const image = await resolveBannerImage(formData);
     const accentColor =
       (formData.get("accentColor") as string)?.trim() || "text-amber-400";
 

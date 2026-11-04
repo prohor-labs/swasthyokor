@@ -511,7 +511,7 @@ export const storeSettings = pgTable("store_settings", {
     .default("স্বাস্থ্যকর"),
   storePhone: varchar("store_phone", { length: 50 })
     .notNull()
-    .default("01812345678"),
+    .default("+8801982027508"),
   whatsappNumber: varchar("whatsapp_number", { length: 50 })
     .notNull()
     .default("8801812345678"),

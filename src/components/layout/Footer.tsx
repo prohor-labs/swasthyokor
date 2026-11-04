@@ -8,6 +8,7 @@ import {
   YoutubeIcon,
 } from "@/components/icons";
 import { FooterMenu } from "@/components/layout/FooterMenu";
+import LogoSquare from "@/components/logo-square";
 import { siteConfig } from "@/config";
 import { getMenu } from "@/lib/db/queries";
 
@@ -19,7 +20,7 @@ export async function Footer() {
   const copyrightName = siteConfig.companyName || siteName;
 
   return (
-    <footer className="border-t border-neutral-200 bg-background text-sm text-neutral-500 dark:border-neutral-800 dark:text-neutral-400">
+    <footer className="border-t border-neutral-200 bg-background pb-[calc(6.5rem+env(safe-area-inset-bottom))] text-sm text-neutral-500 dark:border-neutral-800 dark:text-neutral-400 md:pb-0">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-8 text-sm sm:px-6 sm:py-12 md:flex-row md:gap-12 min-[1320px]:px-0">
         <div>
           <Link
@@ -27,12 +28,12 @@ export async function Footer() {
             href="/"
             aria-label={siteName}
           >
-            <span className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-              স্বাস্থ্য<span className="text-primary">কর</span>
-            </span>
+            <LogoSquare priority={false} />
           </Link>
           <p className="mt-2 max-w-xs text-xs text-muted-foreground leading-relaxed">
-            ১০০% খাঁটি, প্রাকৃতিক ও অর্গানিক স্বাস্থ্যকর খাদ্যের নির্ভরযোগ্য ঠিকানা।
+            স্বাস্থ্যকর বিশুদ্ধতা, গুণগত মান ও প্রাকৃতিক খাদ্যের বিশ্বস্ত ঠিকানা। আমরা মানুষের সুস্বাস্থ্য
+            ও পুষ্টির কথা বিবেচনা করে সরাসরি উৎস থেকে বাছাইকৃত খাঁটি মধু এবং প্রাকৃতিক খাদ্যপণ্য
+            সরবরাহে প্রতিশ্রুতিবদ্ধ।
           </p>
           <div className="mt-4 flex items-center gap-3">
             <a

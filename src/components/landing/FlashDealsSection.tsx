@@ -21,7 +21,7 @@ export async function FlashDealsSection() {
         </div>
 
         <Button
-          render={<Link href="/search" />}
+          render={<Link href="/offers" />}
           variant="outline"
           size="sm"
           className="rounded-full text-xs font-semibold shrink-0 border-border/80"

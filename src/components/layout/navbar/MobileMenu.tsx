@@ -7,7 +7,6 @@ import {
   ArrowRight2,
   Box,
   CloseCircle,
-  Coffee,
   Drop,
   Home,
   Leaf,
@@ -28,20 +27,28 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { useUser } from "@/hooks/use-auth";
-import type { Menu as MenuType } from "@/lib/types";
+import type { CategoryNavItem } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import Search, { SearchSkeleton } from "./Search";
 
-const POPULAR_CATEGORIES = [
-  { label: "খাঁটি মধু", href: "/search?q=মধু", icon: Sparkles },
-  { label: "তেল ও গাওয়া ঘি", href: "/search?q=তেল", icon: Drop },
-  { label: "অর্গানিক চিয়া সিড", href: "/search/superfoods-wellness", icon: Leaf },
-  { label: "ড্রাই ফ্রুটস ও বাদাম", href: "/search?q=বাদাম", icon: Tree },
-  { label: "তুলসী গ্রিন টি", href: "/search?q=চা", icon: Coffee },
-  { label: "হিমালয়ান পিংক সল্ট", href: "/search?q=লবণ", icon: Box },
-];
+const CATEGORY_ICONS: Record<string, typeof Sparkles> = {
+  honey: Sparkles,
+  masala: Box,
+  dates: Tree,
+  "superfoods-wellness": Leaf,
+  "nuts-dry-fruits": Tree,
+  "oils-and-ghee": Drop,
+};
 
-export default function MobileMenu({ menu }: { menu: MenuType[] }) {
+function getCategoryIcon(handle: string) {
+  return CATEGORY_ICONS[handle] ?? ShoppingBag;
+}
+
+export default function MobileMenu({
+  categories,
+}: {
+  categories: CategoryNavItem[];
+}) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const { data: user } = useUser();
@@ -70,7 +77,7 @@ export default function MobileMenu({ menu }: { menu: MenuType[] }) {
         size="icon"
         onClick={openMobileMenu}
         aria-label="মেনু খুলুন"
-        className="size-9 sm:size-10 text-foreground md:hidden cursor-pointer"
+        className="size-9 sm:size-10 text-foreground cursor-pointer"
       >
         <Menu className="size-5 sm:size-6" />
       </Button>
@@ -159,40 +166,28 @@ export default function MobileMenu({ menu }: { menu: MenuType[] }) {
                     <ArrowRight2 className="size-3.5 text-muted-foreground" />
                   </Link>
                 </li>
-                {menu.map((item: MenuType) => (
-                  <li key={item.title}>
-                    <Link
-                      href={item.path}
-                      onClick={closeMobileMenu}
-                      className="flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-muted/70 transition-colors"
-                    >
-                      <span>{item.title}</span>
-                      <ArrowRight2 className="size-3.5 text-muted-foreground" />
-                    </Link>
-                  </li>
-                ))}
               </ul>
             </div>
 
             <Separator className="bg-border/60" />
 
-            {/* Popular Categories */}
+            {/* Categories */}
             <div>
               <div className="mb-2 text-[11px] font-bold uppercase tracking-wider text-muted-foreground px-1">
-                জনপ্রিয় ক্যাটাগরি
+                ক্যাটাগরি
               </div>
               <div className="grid grid-cols-2 gap-2">
-                {POPULAR_CATEGORIES.map((cat) => {
-                  const Icon = cat.icon;
+                {categories.map((category) => {
+                  const Icon = getCategoryIcon(category.handle);
                   return (
                     <Link
-                      key={cat.label}
-                      href={cat.href}
+                      key={category.id}
+                      href={category.href}
                       onClick={closeMobileMenu}
                       className="flex items-center gap-2 rounded-xl border border-border/70 bg-muted/30 p-2.5 text-xs font-semibold text-foreground/90 transition-all hover:border-emerald-500/40 hover:bg-emerald-50/50 dark:hover:bg-emerald-950/30"
                     >
                       <Icon className="size-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                      <span className="line-clamp-1">{cat.label}</span>
+                      <span className="line-clamp-1">{category.title}</span>
                     </Link>
                   );
                 })}

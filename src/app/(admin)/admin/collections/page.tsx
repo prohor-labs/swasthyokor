@@ -1,4 +1,4 @@
-import { asc, desc } from "drizzle-orm";
+import { asc } from "drizzle-orm";
 import { CollectionsTable, CreateCollectionDialog } from "@/components/admin";
 import { db } from "@/lib/db";
 import { collections } from "@/lib/db/schema";
@@ -12,7 +12,7 @@ export default async function AdminCollectionsPage() {
   const allCollections = await db
     .select()
     .from(collections)
-    .orderBy(asc(collections.displayOrder), desc(collections.createdAt));
+    .orderBy(asc(collections.displayOrder), asc(collections.createdAt));
 
   return (
     <div className="flex flex-col gap-6 max-w-6xl">

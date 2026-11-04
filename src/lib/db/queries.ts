@@ -8,7 +8,14 @@ import {
   type SQL,
 } from "drizzle-orm";
 import { cache } from "react";
-import type { Collection, Menu, Order, Page, Product } from "@/types";
+import type {
+  CategoryNavItem,
+  Collection,
+  Menu,
+  Order,
+  Page,
+  Product,
+} from "@/types";
 import { db } from "./index";
 import {
   blogs,
@@ -324,6 +331,25 @@ export const getCollection = cache(
   },
 );
 
+export const getHeaderCategories = cache(
+  async (): Promise<CategoryNavItem[]> => {
+    const rows = await db.query.collections.findMany({
+      where: eq(collections.hidden, false),
+      orderBy: (collection, { asc: a }) => [
+        a(collection.displayOrder),
+        a(collection.createdAt),
+      ],
+    });
+
+    return rows.map((collection) => ({
+      id: collection.id,
+      title: collection.title,
+      handle: collection.handle,
+      href: `/category/${collection.handle}`,
+    }));
+  },
+);
+
 export const getCategorySliderCategories = cache(async () => {
   const rows = await db.query.collections.findMany({
     where: and(
@@ -565,7 +591,7 @@ export const getStoreSettings = cache(async () => {
     settings ?? {
       id: "default",
       storeName: "স্বাস্থ্যকর",
-      storePhone: "01812345678",
+      storePhone: "+8801982027508",
       whatsappNumber: "8801812345678",
       storeEmail: "support@swasthyokor.com",
       storeAddress: "ঢাকা, বাংলাদেশ",

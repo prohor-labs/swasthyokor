@@ -24,7 +24,7 @@ export default async function AdminSettingsPage() {
       .values({
         id: "default",
         storeName: "স্বাস্থ্যকর",
-        storePhone: "01812345678",
+        storePhone: "+8801982027508",
         whatsappNumber: "8801812345678",
         storeEmail: "support@swasthyokor.com",
         storeAddress: "ঢাকা, বাংলাদেশ",

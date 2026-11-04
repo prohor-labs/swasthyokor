@@ -96,9 +96,9 @@ export function MobileSearch() {
         <button
           type="button"
           aria-label="পণ্য খুঁজুন"
-          className="relative flex size-9 sm:size-10 md:size-11 items-center justify-center rounded-lg border border-neutral-200 text-black transition-colors dark:border-neutral-700 dark:text-white hover:bg-neutral-100 dark:hover:bg-neutral-800 cursor-pointer shrink-0 md:hidden"
+          className="relative flex size-9 sm:size-10 md:hidden items-center justify-center rounded-lg text-black transition-colors hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-800 cursor-pointer shrink-0"
         >
-          <SearchIcon className="size-4 sm:size-5 transition-all ease-in-out hover:scale-110" />
+          <SearchIcon className="size-5 sm:size-6 transition-all ease-in-out hover:scale-110" />
         </button>
       }
     >

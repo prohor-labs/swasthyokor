@@ -323,7 +323,8 @@ export const AnimatedThemeToggler = ({
       className={cn(className)}
       {...props}
     >
-      {isDark ? <Sun /> : <Moon />}
+      {/* Lucide defaults to strokeWidth 2, which reads heavier beside the fill-based reicon glyphs. */}
+      {isDark ? <Sun strokeWidth={1.5} /> : <Moon strokeWidth={1.5} />}
       <span className="sr-only">Toggle theme</span>
     </button>
   )

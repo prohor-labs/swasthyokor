@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  experimental: {
+    agentUpgrade: "security",
+  },
   allowedDevOrigins: ["79.143.185.101"],
   typescript: {
     ignoreBuildErrors: true,
@@ -18,6 +21,10 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "cdn.ghorerbazar.com",
+      },
+      {
+        protocol: "https",
         hostname: "cdn.prohor.dev",
       },
       {
@@ -27,6 +34,10 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "*.storage.prohor.dev",
+      },
+      {
+        protocol: "https",
+        hostname: "*.storage.c-6.us-east-2.aws.neon.tech",
       },
     ],
   },

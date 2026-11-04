@@ -123,7 +123,7 @@ export default async function FAQPage() {
               <Button
                 className="bg-emerald-600 hover:bg-emerald-700 text-white"
                 render={
-                  <a href={`tel:${settings.storePhone || "01812345678"}`}>
+                  <a href={`tel:${settings.storePhone || "+8801982027508"}`}>
                     <CallCalling data-icon="inline-start" />
                     সরাসরি কল করুন
                   </a>

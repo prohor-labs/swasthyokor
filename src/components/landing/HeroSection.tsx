@@ -85,95 +85,120 @@ export function HeroSection({ slides: rawSlides }: { slides?: BannerSlide[] }) {
     touchEndX.current = null;
   };
 
+  const promoSlides =
+    slides.length >= 2 ? slides.slice(-2) : HERO_SLIDES.slice(0, 2);
+
   return (
     <div className="w-full py-2 sm:py-4 md:py-5">
       <div className="mx-auto max-w-7xl px-3 sm:px-6">
-        <section
-          className="relative aspect-video w-full overflow-hidden rounded-xl sm:rounded-2xl md:rounded-3xl border border-border/50 shadow-md sm:shadow-lg"
-          aria-roledescription="carousel"
-          aria-label="ফিচার্ড ব্যানার স্লাইডার"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-        >
-          {slides.map((slide, idx) => (
-            <Link
-              key={slide.id || `${slide.image}-${idx}`}
-              href={slide.link}
-              className={cn(
-                "absolute inset-0 block transition-opacity duration-700 ease-in-out cursor-pointer",
-                idx === currentSlide
-                  ? "opacity-100 z-10 pointer-events-auto"
-                  : "opacity-0 z-0 pointer-events-none",
-              )}
-            >
-              {/* Background Image */}
-              <Image
-                src={slide.image}
-                alt={slide.title || `ব্যানার #${idx + 1}`}
-                fill
-                priority={idx === 0}
-                sizes="(min-width: 1280px) 1200px, 100vw"
-                className="object-cover object-center select-none"
-              />
-            </Link>
-          ))}
-
-          {/* Navigation Controls */}
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              prevSlide();
-            }}
-            aria-label="Previous slide"
-            className="absolute top-1/2 left-2 sm:left-4 z-30 size-7 sm:size-9 -translate-y-1/2 rounded-full bg-black/35 text-white hover:bg-black/60 hover:text-white active:scale-90"
+        <div className="flex w-full flex-col gap-5 md:flex-row md:items-stretch">
+          <section
+            className="relative aspect-video w-full shrink-0 overflow-hidden rounded-xl border border-border/50 shadow-md sm:rounded-2xl sm:shadow-lg md:aspect-[5/2] md:w-[66.2%] md:rounded-2xl"
+            aria-roledescription="carousel"
+            aria-label="ফিচার্ড ব্যানার স্লাইডার"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           >
-            <ArrowLeft2 className="size-4" />
-          </Button>
-
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              nextSlide();
-            }}
-            aria-label="Next slide"
-            className="absolute top-1/2 right-2 sm:right-4 z-30 size-7 sm:size-9 -translate-y-1/2 rounded-full bg-black/35 text-white hover:bg-black/60 hover:text-white active:scale-90"
-          >
-            <ArrowRight2 className="size-4" />
-          </Button>
-
-          {/* Indicator Dots */}
-          <div className="absolute bottom-2.5 sm:bottom-3.5 right-4 sm:right-10 z-30 flex items-center gap-1.5 sm:gap-2">
-            {slides.map((slide, i) => (
-              <button
-                key={`${slide.title}-${i}`}
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setCurrentSlide(i);
-                }}
-                aria-label={`Go to slide ${i + 1}`}
+            {slides.map((slide, idx) => (
+              <Link
+                key={slide.id || `${slide.image}-${idx}`}
+                href={slide.link}
                 className={cn(
-                  "h-1.5 sm:h-2 transition-all rounded-full cursor-pointer",
-                  i === currentSlide
-                    ? "w-6 sm:w-8 bg-emerald-500"
-                    : "w-1.5 sm:w-2 bg-white/60 hover:bg-white/90",
+                  "absolute inset-0 block transition-opacity duration-700 ease-in-out cursor-pointer",
+                  idx === currentSlide
+                    ? "opacity-100 z-10 pointer-events-auto"
+                    : "opacity-0 z-0 pointer-events-none",
                 )}
-              />
+              >
+                {/* Background Image */}
+                <Image
+                  src={slide.image}
+                  alt={slide.title || `ব্যানার #${idx + 1}`}
+                  fill
+                  priority={idx === 0}
+                  sizes="(min-width: 1280px) 800px, (min-width: 768px) 66vw, 100vw"
+                  className="object-cover object-center select-none"
+                />
+              </Link>
+            ))}
+
+            {/* Navigation Controls */}
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                prevSlide();
+              }}
+              aria-label="Previous slide"
+              className="absolute top-1/2 left-2 sm:left-4 z-30 size-7 sm:size-9 -translate-y-1/2 rounded-full bg-black/35 text-white hover:bg-black/60 hover:text-white active:scale-90 md:left-6 md:size-10 md:bg-white md:text-emerald-600 md:shadow-[0_1px_2px_0_#00000029] md:hover:bg-white/90 md:hover:text-emerald-700"
+            >
+              <ArrowLeft2 className="size-4" />
+            </Button>
+
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                nextSlide();
+              }}
+              aria-label="Next slide"
+              className="absolute top-1/2 right-2 sm:right-4 z-30 size-7 sm:size-9 -translate-y-1/2 rounded-full bg-black/35 text-white hover:bg-black/60 hover:text-white active:scale-90 md:right-6 md:size-10 md:bg-white md:text-emerald-600 md:shadow-[0_1px_2px_0_#00000029] md:hover:bg-white/90 md:hover:text-emerald-700"
+            >
+              <ArrowRight2 className="size-4" />
+            </Button>
+
+            {/* Indicator Dots */}
+            <div className="absolute bottom-2.5 sm:bottom-3.5 right-4 sm:right-10 z-30 flex items-center gap-1.5 sm:gap-2 md:bottom-4 md:left-1/2 md:right-auto md:-translate-x-1/2">
+              {slides.map((slide, i) => (
+                <button
+                  key={`${slide.title}-${i}`}
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setCurrentSlide(i);
+                  }}
+                  aria-label={`Go to slide ${i + 1}`}
+                  className={cn(
+                    "h-1.5 sm:h-2 transition-all rounded-full cursor-pointer",
+                    i === currentSlide
+                      ? "w-6 sm:w-8 bg-emerald-500 md:w-10"
+                      : "w-1.5 sm:w-2 bg-white/60 hover:bg-white/90 md:bg-[#E8F5EE]",
+                  )}
+                />
+              ))}
+            </div>
+          </section>
+
+          {/* Desktop/tablet promo banners */}
+          <div className="hidden min-w-0 flex-1 flex-col gap-5 md:flex">
+            {promoSlides.map((slide, idx) => (
+              <Link
+                key={`promo-${slide.id || `${slide.image}-${idx}`}`}
+                href={slide.link}
+                aria-label={slide.title || `প্রোমো ব্যানার #${idx + 1}`}
+                className="group relative min-h-0 flex-1 overflow-hidden rounded-2xl"
+              >
+                <Image
+                  src={slide.image}
+                  alt={slide.title || `প্রোমো ব্যানার #${idx + 1}`}
+                  fill
+                  sizes="(min-width: 1280px) 400px, (min-width: 768px) 33vw, 100vw"
+                  className="object-cover object-center transition-transform duration-500 group-hover:scale-[1.02]"
+                />
+              </Link>
             ))}
           </div>
-        </section>
+        </div>
       </div>
     </div>
   );

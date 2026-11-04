@@ -366,6 +366,13 @@ export type Menu = {
   path: string;
 };
 
+export type CategoryNavItem = {
+  id: string;
+  title: string;
+  handle: string;
+  href: string;
+};
+
 export type Page = {
   id: string;
   title: string;
