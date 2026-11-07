@@ -20,7 +20,7 @@ export default async function AdminProductsPage() {
     allVariants,
     allCollections,
     allProdCollections,
-  ]: any[] = await Promise.all([
+  ] = await Promise.all([
     db.select().from(products),
     db.select().from(productImages),
     db.select().from(productVariants),
@@ -65,7 +65,7 @@ export default async function AdminProductsPage() {
         price: String(v.priceAmount),
         compareAtPrice: v.compareAtPrice ? String(v.compareAtPrice) : undefined,
         inventoryQuantity: v.inventoryQuantity ?? 15,
-        unit: (v.unit as any) || "packet",
+        unit: v.unit || "packet",
       })),
     };
   });

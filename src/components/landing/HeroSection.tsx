@@ -160,7 +160,7 @@ export function HeroSection({ slides: rawSlides }: { slides?: BannerSlide[] }) {
             <div className="absolute bottom-2.5 sm:bottom-3.5 right-4 sm:right-10 z-30 flex items-center gap-1.5 sm:gap-2 md:bottom-4 md:left-1/2 md:right-auto md:-translate-x-1/2">
               {slides.map((slide, i) => (
                 <button
-                  key={`${slide.title}-${i}`}
+                  key={slide.id || slide.image || `slide-${slide.link}`}
                   type="button"
                   onClick={(e) => {
                     e.preventDefault();

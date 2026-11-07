@@ -3,7 +3,6 @@ import Link from "next/link";
 import {
   CardTick,
   DocumentText,
-  Lock,
   Refresh2,
   ShieldSecurity,
   Truck,
@@ -106,8 +105,8 @@ export default function TermsPage() {
                   </h2>
                 </div>
                 <div className="text-xs sm:text-sm text-muted-foreground space-y-2.5 leading-relaxed pl-1 sm:pl-10">
-                  {sec.content.map((p, idx) => (
-                    <p key={idx}>{p}</p>
+                  {sec.content.map((p) => (
+                    <p key={p}>{p}</p>
                   ))}
                 </div>
               </CardContent>

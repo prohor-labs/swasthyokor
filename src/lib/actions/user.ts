@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { getCurrentUser } from "../auth/session";
 import { db } from "../db";
 import { productReviews, users } from "../db/schema";
+import { deleteObject, uploadObject } from "../storage";
 
 export async function submitReviewAction(formData: FormData) {
   try {
@@ -39,10 +40,10 @@ export async function submitReviewAction(formData: FormData) {
 
     revalidatePath(`/product`);
     return { success: true, error: "", review };
-  } catch (err: any) {
+  } catch (err: unknown) {
     return {
       success: false,
-      error: err.message || "রিভিউ যোগ করতে সমস্যা হয়েছে।",
+      error: err instanceof Error ? err.message : "রিভিউ যোগ করতে সমস্যা হয়েছে।",
     };
   }
 }
@@ -56,22 +57,50 @@ export async function updateProfileUserAction(formData: FormData) {
 
     const name = (formData.get("name") as string)?.trim();
     const phone = (formData.get("phone") as string)?.trim();
+    let avatarUrl = user.avatarUrl;
+
+    const avatarFile = formData.get("avatar") as File | null;
+    if (
+      avatarFile &&
+      avatarFile.size > 0 &&
+      avatarFile.type.startsWith("image/")
+    ) {
+      try {
+        const ext = avatarFile.name.split(".").pop() || "webp";
+        const key = `avatars/${user.id}-${Date.now()}.${ext}`;
+        const buffer = Buffer.from(await avatarFile.arrayBuffer());
+        const uploadedUrl = await uploadObject({
+          key,
+          body: buffer,
+          contentType: avatarFile.type || "image/webp",
+        });
+
+        if (user.avatarUrl && user.avatarUrl !== uploadedUrl) {
+          await deleteObject(user.avatarUrl);
+        }
+        avatarUrl = uploadedUrl;
+      } catch (uploadErr) {
+        console.error("Failed to upload avatar to S3:", uploadErr);
+      }
+    }
 
     await db
       .update(users)
       .set({
         name: name || user.name,
         phone: phone || user.phone,
+        avatarUrl,
         updatedAt: new Date(),
       })
       .where(eq(users.id, user.id));
 
     revalidatePath("/dashboard/profile");
     return { success: true, message: "প্রোফাইল সফলভাবে আপডেট হয়েছে!", error: "" };
-  } catch (err: any) {
+  } catch (err: unknown) {
     return {
       success: false,
-      error: err.message || "প্রোফাইল আপডেট করতে সমস্যা হয়েছে।",
+      error:
+        err instanceof Error ? err.message : "প্রোফাইল আপডেট করতে সমস্যা হয়েছে।",
     };
   }
 }

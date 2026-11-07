@@ -155,29 +155,15 @@ export function AdminBannersManager({ banners }: { banners: HeroBanner[] }) {
                   htmlFor="create-image"
                   className="text-xs sm:text-sm font-semibold text-foreground/90"
                 >
-                  ব্যানার ইমেজ ফাইল (বা ইমেজ URL) *
+                  ব্যানার ইমেজ (S3 আপলোড) *
                 </FieldLabel>
                 <Input
                   id="create-image"
                   name="image"
                   type="file"
                   accept="image/*"
+                  required
                   className="h-10 text-xs rounded-lg sm:rounded-xl file:mr-2.5 file:rounded-md file:border-0 file:bg-muted file:px-2 file:py-1 file:text-xs file:font-semibold"
-                />
-              </Field>
-
-              <Field>
-                <FieldLabel
-                  htmlFor="create-imageUrl"
-                  className="text-xs sm:text-sm font-semibold text-foreground/90"
-                >
-                  অথবা ছবির সরাসরি লিঙ্ক (URL)
-                </FieldLabel>
-                <Input
-                  id="create-imageUrl"
-                  name="imageUrl"
-                  placeholder="https://images.unsplash.com/..."
-                  className="h-10 text-xs sm:text-sm px-3 rounded-lg sm:rounded-xl font-mono"
                 />
               </Field>
             </FieldGroup>
@@ -328,7 +314,7 @@ export function AdminBannersManager({ banners }: { banners: HeroBanner[] }) {
                   htmlFor="edit-image"
                   className="text-xs sm:text-sm font-semibold text-foreground/90"
                 >
-                  নতুন ব্যানার ইমেজ ফাইল (ঐচ্ছিক)
+                  নতুন ব্যানার ইমেজ (S3 আপলোড - ঐচ্ছিক)
                 </FieldLabel>
                 <Input
                   id="edit-image"
@@ -336,21 +322,6 @@ export function AdminBannersManager({ banners }: { banners: HeroBanner[] }) {
                   type="file"
                   accept="image/*"
                   className="h-10 text-xs rounded-lg sm:rounded-xl file:mr-2.5 file:rounded-md file:border-0 file:bg-muted file:px-2 file:py-1 file:text-xs file:font-semibold"
-                />
-              </Field>
-
-              <Field>
-                <FieldLabel
-                  htmlFor="edit-imageUrl"
-                  className="text-xs sm:text-sm font-semibold text-foreground/90"
-                >
-                  অথবা নতুন ইমেজ URL (ঐচ্ছিক)
-                </FieldLabel>
-                <Input
-                  id="edit-imageUrl"
-                  name="imageUrl"
-                  placeholder="https://images.unsplash.com/..."
-                  className="h-10 text-xs sm:text-sm px-3 rounded-lg sm:rounded-xl font-mono"
                 />
               </Field>
             </FieldGroup>

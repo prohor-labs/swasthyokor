@@ -113,9 +113,9 @@ export default async function OrderSuccessPage({
                 অর্ডারকৃত পণ্যের তালিকা
               </h3>
               <ul className="divide-y divide-border/60 rounded-lg sm:rounded-xl border border-border/60 bg-muted/20 px-3 sm:px-4">
-                {order.items.map((item, i) => (
+                {order.items.map((item) => (
                   <li
-                    key={`${item.productHandle}-${item.variantTitle}-${i}`}
+                    key={`${item.productHandle}-${item.variantTitle}`}
                     className="flex items-center justify-between py-2.5 sm:py-3.5 text-sm"
                   >
                     <div className="min-w-0 flex-1 pr-3">

@@ -18,7 +18,7 @@ export const metadata = {
 };
 
 export default async function AdminOverviewPage() {
-  const [allProducts, allOrders, allCollections, allUsers, allBlogs]: any[] =
+  const [allProducts, allOrders, allCollections, allUsers, allBlogs] =
     await Promise.all([
       db.select().from(products),
       db.select().from(orders),

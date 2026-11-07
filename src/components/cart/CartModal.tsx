@@ -151,7 +151,7 @@ function CartSheet({
                     b.merchandise.product.title,
                   ),
                 )
-                .map((item, i) => {
+                .map((item) => {
                   const merchandiseSearchParams: Record<string, string> = {};
 
                   item.merchandise.selectedOptions.forEach(
@@ -169,7 +169,7 @@ function CartSheet({
 
                   return (
                     <li
-                      key={`${item.merchandise.id}-${i}`}
+                      key={item.id || item.merchandise.id}
                       className="py-2.5 sm:py-4"
                     >
                       <div className="relative flex items-center justify-between gap-2.5 sm:gap-3">

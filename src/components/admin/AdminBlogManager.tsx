@@ -31,6 +31,7 @@ import {
   updateBlogAction,
 } from "@/lib/actions/admin";
 import type { BlogPost } from "@/lib/db/queries";
+import { compressImageClient } from "@/lib/image";
 
 export function AdminBlogManager({
   initialPosts,
@@ -51,6 +52,7 @@ export function AdminBlogManager({
   const [author, setAuthor] = useState("স্বাস্থ্যকর নিউট্রিশন টিম");
   const [description, setDescription] = useState("");
   const [coverImage, setCoverImage] = useState("");
+  const [coverImageFile, setCoverImageFile] = useState<File | null>(null);
   const [content, setContent] = useState("");
 
   const resetForm = () => {
@@ -61,6 +63,7 @@ export function AdminBlogManager({
     setAuthor("স্বাস্থ্যকর নিউট্রিশন টিম");
     setDescription("");
     setCoverImage("");
+    setCoverImageFile(null);
     setContent("");
     setEditingPost(null);
   };
@@ -74,11 +77,12 @@ export function AdminBlogManager({
     setAuthor(post.author);
     setDescription(post.description);
     setCoverImage(post.coverImage);
+    setCoverImageFile(null);
     setContent(post.content);
     setIsCreateOpen(true);
   };
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("title", title);
@@ -89,6 +93,15 @@ export function AdminBlogManager({
     formData.append("description", description);
     formData.append("coverImage", coverImage);
     formData.append("content", content);
+
+    if (
+      coverImageFile &&
+      coverImageFile.size > 0 &&
+      coverImageFile.type.startsWith("image/")
+    ) {
+      const compressed = await compressImageClient(coverImageFile);
+      formData.append("imageFile", compressed);
+    }
 
     if (editingPost?.id) {
       formData.append("id", editingPost.id);
@@ -278,15 +291,18 @@ export function AdminBlogManager({
                 </div>
 
                 <Field>
-                  <FieldLabel htmlFor="blog-cover-image">
-                    কভার ইমেজ ইউআরএল (Unsplash বা CDN)
+                  <FieldLabel htmlFor="blog-cover-image-file">
+                    কভার ইমেজ (S3 আপলোড
+                    {editingPost ? " - পরিবর্তন করতে চাইলে" : ""})
                   </FieldLabel>
                   <Input
-                    id="blog-cover-image"
-                    value={coverImage}
-                    onChange={(e) => setCoverImage(e.target.value)}
-                    placeholder="https://images.unsplash.com/photo-..."
-                    className="rounded-xl font-mono text-xs"
+                    id="blog-cover-image-file"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) =>
+                      setCoverImageFile(e.target.files?.[0] || null)
+                    }
+                    className="rounded-xl text-xs file:mr-2.5 file:rounded-md file:border-0 file:bg-muted file:px-2 file:py-1 file:text-xs file:font-semibold"
                   />
                 </Field>
 

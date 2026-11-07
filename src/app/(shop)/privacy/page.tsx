@@ -1,13 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import {
-  EyeSlash,
-  FingerScan,
-  Key,
-  Lock,
-  SecurityUser,
-  ShieldCheck,
-} from "reicon-react";
+import { EyeSlash, FingerScan, Key, Lock, SecurityUser } from "reicon-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { baseUrl } from "@/lib/utils";
 
@@ -103,8 +95,8 @@ export default function PrivacyPage() {
                   </h2>
                 </div>
                 <div className="text-xs sm:text-sm text-muted-foreground space-y-2.5 leading-relaxed pl-1 sm:pl-10">
-                  {sec.content.map((p, idx) => (
-                    <p key={idx}>{p}</p>
+                  {sec.content.map((p) => (
+                    <p key={p}>{p}</p>
                   ))}
                 </div>
               </CardContent>

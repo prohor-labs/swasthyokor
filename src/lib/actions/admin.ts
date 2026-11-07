@@ -19,7 +19,7 @@ import { uploadObject } from "../storage";
 
 async function requireAdmin() {
   const user = await getCurrentUser();
-  if (!user || !user.isAdmin) {
+  if (!user?.isAdmin) {
     throw new Error("অননুমোদিত অ্যাক্সেস। শুধুমাত্র অ্যাডমিনরা এই পরিবর্তন করতে পারবেন।");
   }
   return user;
@@ -40,11 +40,9 @@ export async function updateOrderStatusAction(orderId: string, status: string) {
 
     revalidatePath("/admin/orders");
     return { success: true, error: "" };
-  } catch (err: any) {
-    return {
-      success: false,
-      error: err.message || "স্ট্যাটাস পরিবর্তন ব্যর্থ হয়েছে।",
-    };
+  } catch (err: unknown) {
+    const errMsg = err instanceof Error ? err.message : "";
+    return { success: false, error: errMsg || "স্ট্যাটাস পরিবর্তন ব্যর্থ হয়েছে।" };
   }
 }
 
@@ -127,7 +125,7 @@ export async function createProductAction(formData: FormData) {
     revalidatePath("/admin/products");
     revalidatePath("/");
     return { success: true, error: "" };
-  } catch (err: any) {
+  } catch (err: unknown) {
     return { success: false, error: err.message || "পণ্য তৈরি ব্যর্থ হয়েছে।" };
   }
 }
@@ -242,7 +240,7 @@ export async function updateProductAction(formData: FormData) {
     revalidatePath("/admin/products");
     revalidatePath("/");
     return { success: true, error: "" };
-  } catch (err: any) {
+  } catch (err: unknown) {
     return { success: false, error: err.message || "পণ্য আপডেট ব্যর্থ হয়েছে।" };
   }
 }
@@ -260,7 +258,7 @@ export async function toggleProductAvailabilityAction(
 
     revalidatePath("/admin/products");
     return { success: true, error: "" };
-  } catch (err: any) {
+  } catch (err: unknown) {
     return { success: false, error: err.message || "অ্যাকশন ব্যর্থ হয়েছে।" };
   }
 }
@@ -272,7 +270,7 @@ export async function deleteProductAction(id: string) {
 
     revalidatePath("/admin/products");
     return { success: true, error: "" };
-  } catch (err: any) {
+  } catch (err: unknown) {
     return { success: false, error: err.message || "পণ্য মোছা ব্যর্থ হয়েছে।" };
   }
 }
@@ -307,7 +305,7 @@ export async function createCollectionAction(formData: FormData) {
     revalidatePath("/admin/collections");
     revalidatePath("/", "layout");
     return { success: true, error: "" };
-  } catch (err: any) {
+  } catch (err: unknown) {
     return { success: false, error: err.message || "ক্যাটাগরি তৈরি ব্যর্থ হয়েছে।" };
   }
 }
@@ -345,7 +343,7 @@ export async function updateCollectionAction(formData: FormData) {
     revalidatePath("/admin/collections");
     revalidatePath("/", "layout");
     return { success: true, error: "" };
-  } catch (err: any) {
+  } catch (err: unknown) {
     return { success: false, error: err.message || "ক্যাটাগরি আপডেট ব্যর্থ হয়েছে।" };
   }
 }
@@ -364,7 +362,7 @@ export async function toggleCollectionHomepageAction(
     revalidatePath("/admin/collections");
     revalidatePath("/", "layout");
     return { success: true, error: "" };
-  } catch (err: any) {
+  } catch (err: unknown) {
     return { success: false, error: err.message || "আপডেট ব্যর্থ হয়েছে।" };
   }
 }
@@ -377,7 +375,7 @@ export async function deleteCollectionAction(id: string) {
     revalidatePath("/admin/collections");
     revalidatePath("/", "layout");
     return { success: true, error: "" };
-  } catch (err: any) {
+  } catch (err: unknown) {
     return { success: false, error: err.message || "ক্যাটাগরি মোছা ব্যর্থ হয়েছে।" };
   }
 }
@@ -412,7 +410,7 @@ export async function createBlogAction(formData: FormData) {
     revalidatePath("/admin/blog");
     revalidatePath("/blog");
     return { success: true, error: "" };
-  } catch (err: any) {
+  } catch (err: unknown) {
     return { success: false, error: err.message || "ব্লগ তৈরি ব্যর্থ হয়েছে।" };
   }
 }
@@ -449,7 +447,7 @@ export async function updateBlogAction(formData: FormData) {
     revalidatePath("/admin/blog");
     revalidatePath("/blog");
     return { success: true, error: "" };
-  } catch (err: any) {
+  } catch (err: unknown) {
     return { success: false, error: err.message || "ব্লগ আপডেট ব্যর্থ হয়েছে।" };
   }
 }
@@ -462,7 +460,7 @@ export async function deleteBlogAction(id: string) {
     revalidatePath("/admin/blog");
     revalidatePath("/blog");
     return { success: true, error: "" };
-  } catch (err: any) {
+  } catch (err: unknown) {
     return { success: false, error: err.message || "ব্লগ মোছা ব্যর্থ হয়েছে।" };
   }
 }
@@ -511,7 +509,7 @@ export async function createHeroBannerAction(formData: FormData) {
     revalidatePath("/admin/banners");
     revalidatePath("/");
     return { success: true, error: "" };
-  } catch (err: any) {
+  } catch (err: unknown) {
     return { success: false, error: err.message || "ব্যানার তৈরি ব্যর্থ হয়েছে।" };
   }
 }
@@ -547,7 +545,7 @@ export async function updateHeroBannerAction(formData: FormData) {
     revalidatePath("/admin/banners");
     revalidatePath("/");
     return { success: true, error: "" };
-  } catch (err: any) {
+  } catch (err: unknown) {
     return { success: false, error: err.message || "ব্যানার আপডেট ব্যর্থ হয়েছে।" };
   }
 }
@@ -560,7 +558,7 @@ export async function deleteHeroBannerAction(id: string) {
     revalidatePath("/admin/banners");
     revalidatePath("/");
     return { success: true, error: "" };
-  } catch (err: any) {
+  } catch (err: unknown) {
     return { success: false, error: err.message || "ব্যানার মোছা ব্যর্থ হয়েছে।" };
   }
 }
@@ -611,7 +609,7 @@ export async function updateStoreSettingsAction(formData: FormData) {
     revalidatePath("/admin/settings");
     revalidatePath("/");
     return { success: true, error: "" };
-  } catch (err: any) {
+  } catch (err: unknown) {
     return { success: false, error: err.message || "সেটিংস আপডেট ব্যর্থ হয়েছে।" };
   }
 }

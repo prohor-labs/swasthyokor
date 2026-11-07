@@ -244,8 +244,9 @@ export function ProductReviews({
             </span>
           </div>
 
-          <div
-            className="flex items-center gap-1.5 sm:gap-2"
+          <fieldset
+            aria-label="রেটিং নির্বাচন"
+            className="flex items-center gap-1.5 sm:gap-2 border-0 p-0 m-0"
             onMouseLeave={() => setBarHoverRating(null)}
           >
             {[1, 2, 3, 4, 5].map((star) => {
@@ -277,7 +278,7 @@ export function ProductReviews({
                 </button>
               );
             })}
-          </div>
+          </fieldset>
         </div>
 
         {/* ──── Star Filter Pills (Google Play Store Filter Chips) ──── */}
@@ -479,8 +480,9 @@ export function ProductReviews({
                 রেটিং নির্বাচন করুন *
               </Label>
               <div className="flex items-center gap-2 p-3 rounded-xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200/60 dark:border-amber-900/40">
-                <div
-                  className="flex items-center gap-1.5"
+                <fieldset
+                  aria-label="স্টার রেটিং নির্বাচন"
+                  className="flex items-center gap-1.5 border-0 p-0 m-0"
                   onMouseLeave={() => setHoverRating(null)}
                 >
                   {[1, 2, 3, 4, 5].map((star) => {
@@ -506,7 +508,7 @@ export function ProductReviews({
                       </button>
                     );
                   })}
-                </div>
+                </fieldset>
 
                 <span className="ml-auto text-xs font-bold text-amber-700 dark:text-amber-300">
                   {RATING_LABELS[hoverRating ?? newRating]}

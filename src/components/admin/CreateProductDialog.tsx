@@ -155,10 +155,10 @@ export function CreateProductDialog({
     );
   };
 
-  const handleVariantFieldChange = (
+  const handleVariantFieldChange = <K extends keyof ProductVariantItem>(
     index: number,
-    field: keyof ProductVariantItem,
-    value: any,
+    field: K,
+    value: ProductVariantItem[K],
   ) => {
     setVariants((prev) =>
       prev.map((v, i) => (i === index ? { ...v, [field]: value } : v)),
@@ -423,7 +423,7 @@ export function CreateProductDialog({
             <div className="flex flex-col gap-2.5">
               {variants.map((v, idx) => (
                 <div
-                  key={idx}
+                  key={v.id || `create-variant-${idx}`}
                   className="flex flex-col gap-2 rounded-lg sm:rounded-xl border border-border bg-card p-2.5 sm:p-3 shadow-2xs"
                 >
                   <div className="flex items-center justify-between">
@@ -460,13 +460,17 @@ export function CreateProductDialog({
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-2.5">
                     {/* Amount / Size Input */}
                     <div>
-                      <label className="text-[10px] sm:text-[11px] font-medium text-muted-foreground block mb-1">
+                      <label
+                        htmlFor={`create-pack-amount-${idx}`}
+                        className="text-[10px] sm:text-[11px] font-medium text-muted-foreground block mb-1"
+                      >
                         {unitCategory === "count"
                           ? `সংখ্যা (${getProductUnitLabel(rootUnit)}) *`
                           : `পরিমাণ (${getProductUnitLabel(rootUnit)}) *`}
                       </label>
                       <div className="relative">
                         <Input
+                          id={`create-pack-amount-${idx}`}
                           type="number"
                           step="any"
                           min="0"
@@ -492,10 +496,14 @@ export function CreateProductDialog({
 
                     {/* Selling Price */}
                     <div>
-                      <label className="text-[10px] sm:text-[11px] font-medium text-muted-foreground block mb-1">
+                      <label
+                        htmlFor={`create-pack-price-${idx}`}
+                        className="text-[10px] sm:text-[11px] font-medium text-muted-foreground block mb-1"
+                      >
                         বিক্রয় মূল্য (৳) *
                       </label>
                       <Input
+                        id={`create-pack-price-${idx}`}
                         type="number"
                         step="any"
                         value={v.price}
@@ -510,10 +518,14 @@ export function CreateProductDialog({
 
                     {/* Compare Price */}
                     <div>
-                      <label className="text-[10px] sm:text-[11px] font-medium text-muted-foreground block mb-1">
+                      <label
+                        htmlFor={`create-pack-compare-${idx}`}
+                        className="text-[10px] sm:text-[11px] font-medium text-muted-foreground block mb-1"
+                      >
                         পূর্বের মূল্য (৳)
                       </label>
                       <Input
+                        id={`create-pack-compare-${idx}`}
                         type="number"
                         step="any"
                         value={v.compareAtPrice || ""}
@@ -539,7 +551,7 @@ export function CreateProductDialog({
               htmlFor="prod-image"
               className="text-xs sm:text-sm font-semibold text-foreground/90"
             >
-              পণ্যের ছবি
+              পণ্যের ছবি (S3 আপলোড)
             </FieldLabel>
             <Input
               id="prod-image"

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.4.2/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.6.6/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -13,7 +13,10 @@
       "!.next",
       "!dist",
       "!build",
-      "!src/components/ui"
+      "!src/components/ui",
+      "!.agents",
+      "!graphify-out",
+      "!public"
     ]
   },
   "formatter": {
@@ -29,7 +32,7 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       "security": {
         "noDangerouslySetInnerHtml": "off"
       },

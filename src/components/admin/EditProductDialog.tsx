@@ -242,10 +242,10 @@ export function EditProductDialog({
     );
   };
 
-  const handleVariantFieldChange = (
+  const handleVariantFieldChange = <K extends keyof ProductVariantItem>(
     index: number,
-    field: keyof ProductVariantItem,
-    value: any,
+    field: K,
+    value: ProductVariantItem[K],
   ) => {
     setVariants((prev) =>
       prev.map((v, i) => (i === index ? { ...v, [field]: value } : v)),
@@ -546,7 +546,7 @@ export function EditProductDialog({
             <div className="flex flex-col gap-2.5">
               {variants.map((v, idx) => (
                 <div
-                  key={idx}
+                  key={v.id || `edit-variant-${product.id}-${idx}`}
                   className="flex flex-col gap-2 rounded-lg sm:rounded-xl border border-border bg-card p-2.5 sm:p-3 shadow-2xs"
                 >
                   <div className="flex items-center justify-between">
@@ -583,11 +583,15 @@ export function EditProductDialog({
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-2.5">
                     {/* Amount / Weight */}
                     <div>
-                      <label className="text-[10px] sm:text-[11px] font-medium text-muted-foreground block mb-1">
+                      <label
+                        htmlFor={`edit-pack-amount-${product.id}-${idx}`}
+                        className="text-[10px] sm:text-[11px] font-medium text-muted-foreground block mb-1"
+                      >
                         পরিমাণ ({getProductUnitLabel(rootUnit)}) *
                       </label>
                       <div className="relative">
                         <Input
+                          id={`edit-pack-amount-${product.id}-${idx}`}
                           type="number"
                           step="any"
                           min="0"
@@ -607,10 +611,14 @@ export function EditProductDialog({
 
                     {/* Selling Price */}
                     <div>
-                      <label className="text-[10px] sm:text-[11px] font-medium text-muted-foreground block mb-1">
+                      <label
+                        htmlFor={`edit-pack-price-${product.id}-${idx}`}
+                        className="text-[10px] sm:text-[11px] font-medium text-muted-foreground block mb-1"
+                      >
                         বিক্রয় মূল্য (৳) *
                       </label>
                       <Input
+                        id={`edit-pack-price-${product.id}-${idx}`}
                         type="number"
                         step="any"
                         min="0"
@@ -626,10 +634,14 @@ export function EditProductDialog({
 
                     {/* Compare At Price */}
                     <div>
-                      <label className="text-[10px] sm:text-[11px] font-medium text-muted-foreground block mb-1">
+                      <label
+                        htmlFor={`edit-pack-compare-${product.id}-${idx}`}
+                        className="text-[10px] sm:text-[11px] font-medium text-muted-foreground block mb-1"
+                      >
                         আগের মূল্য (৳)
                       </label>
                       <Input
+                        id={`edit-pack-compare-${product.id}-${idx}`}
                         type="number"
                         step="any"
                         min="0"
@@ -656,7 +668,7 @@ export function EditProductDialog({
               htmlFor={`prod-image-${product.id}`}
               className="text-xs sm:text-sm font-semibold text-foreground/90"
             >
-              নতুন ছবি পরিবর্তন (ঐচ্ছিক)
+              নতুন ছবি পরিবর্তন (S3 আপলোড - ঐচ্ছিক)
             </FieldLabel>
             <Input
               id={`prod-image-${product.id}`}

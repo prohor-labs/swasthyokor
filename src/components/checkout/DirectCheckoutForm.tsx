@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { BagShopping, CheckCircle, CloseCircle, Tag } from "@/components/icons";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {

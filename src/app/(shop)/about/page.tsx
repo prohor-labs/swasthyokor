@@ -6,14 +6,11 @@ import {
   CheckCircle,
   Clock,
   Heart,
-  HelpCircle,
   ShieldCheck,
   Truck,
-  Users,
 } from "reicon-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { siteConfig } from "@/config";
 import { baseUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -230,7 +227,7 @@ export default function AboutPage() {
   );
 }
 
-function SparklesIcon(props: React.SVGProps<SVGSVGElement>) {
+function _SparklesIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

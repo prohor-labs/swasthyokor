@@ -3,7 +3,6 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Calendar, Package, Receipt } from "@/components/icons";
 import { QuickList, type QuickListItem } from "@/components/shared";
-import { Button } from "@/components/ui/button";
 import {
   Empty,
   EmptyDescription,

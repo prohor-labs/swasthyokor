@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type React from "react";
 import type { SVGProps } from "react";
 import { cn } from "@/lib/utils";
@@ -252,11 +253,13 @@ export function GoogleIcon(props: SVGProps<SVGSVGElement>) {
 export function WhatsAppIcon({
   className,
   ...props
-}: React.ComponentProps<"img">) {
+}: Omit<React.ComponentProps<typeof Image>, "src" | "alt">) {
   return (
-    <img
+    <Image
       src="/whatsapp-icon.png"
       alt="WhatsApp"
+      width={24}
+      height={24}
       className={cn("size-5 inline-block shrink-0 object-contain", className)}
       {...props}
     />

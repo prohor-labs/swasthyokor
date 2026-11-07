@@ -96,7 +96,7 @@ export async function checkoutDirectProduct(formData: FormData): Promise<void> {
     with: { variants: true },
   });
 
-  if (!product || !product.variants.length) {
+  if (!product?.variants.length) {
     throw new Error("পণ্য পাওয়া যায়নি।");
   }
 

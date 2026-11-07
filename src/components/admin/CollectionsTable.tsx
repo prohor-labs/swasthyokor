@@ -31,6 +31,7 @@ import {
   toggleCollectionHomepageAction,
   updateCollectionAction,
 } from "@/lib/actions/admin";
+import { compressImageClient } from "@/lib/image";
 
 interface CollectionItem {
   id: string;
@@ -73,12 +74,22 @@ export function CollectionsTable({
     });
   };
 
-  const handleEditSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!editingCol) return;
     setEditError(null);
     const formData = new FormData(e.currentTarget);
     formData.append("id", editingCol.id);
+
+    const imageFile = formData.get("imageFile") as File | null;
+    if (
+      imageFile &&
+      imageFile.size > 0 &&
+      imageFile.type.startsWith("image/")
+    ) {
+      const compressed = await compressImageClient(imageFile);
+      formData.set("imageFile", compressed);
+    }
 
     startTransition(async () => {
       const res = await updateCollectionAction(formData);
@@ -282,17 +293,17 @@ export function CollectionsTable({
 
               <Field>
                 <FieldLabel
-                  htmlFor="edit-col-image"
+                  htmlFor="edit-col-image-file"
                   className="text-xs sm:text-sm font-semibold text-foreground/90"
                 >
-                  ক্যাটাগরি ছবি URL (Image URL)
+                  নতুন ক্যাটাগরি ছবি (S3 আপলোড - ঐচ্ছিক)
                 </FieldLabel>
                 <Input
-                  id="edit-col-image"
-                  name="image"
-                  defaultValue={editingCol.image || ""}
-                  placeholder="https://..."
-                  className="h-10 text-xs sm:text-sm px-3 rounded-lg sm:rounded-xl font-mono"
+                  id="edit-col-image-file"
+                  name="imageFile"
+                  type="file"
+                  accept="image/*"
+                  className="h-10 text-xs rounded-lg sm:rounded-xl file:mr-2.5 file:rounded-md file:border-0 file:bg-muted file:px-2 file:py-1 file:text-xs file:font-semibold"
                 />
               </Field>
 

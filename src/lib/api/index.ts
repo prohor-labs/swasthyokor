@@ -179,7 +179,7 @@ export const ordersApi = {
 
 export const adminApi = {
   getProducts: async () => (await api.get("/admin/products")).data,
-  createProduct: async (data: any) =>
+  createProduct: async (data: unknown) =>
     (await api.post("/admin/products", data)).data,
   deleteProduct: async (id: string) =>
     (await api.delete(`/admin/products/${id}`)).data,
@@ -189,7 +189,7 @@ export const adminApi = {
   updateOrderStatus: async (id: string, status: string) =>
     (await api.patch(`/admin/orders/${id}/status`, { status })).data,
   getCollections: async () => (await api.get("/admin/collections")).data,
-  createCollection: async (data: any) =>
+  createCollection: async (data: unknown) =>
     (await api.post("/admin/collections", data)).data,
   deleteCollection: async (id: string) =>
     (await api.delete(`/admin/collections/${id}`)).data,
@@ -197,15 +197,15 @@ export const adminApi = {
   toggleCustomerBan: async (id: string, isBanned: boolean) =>
     (await api.patch(`/admin/customers/${id}/ban`, { isBanned })).data,
   getCoupons: async () => (await api.get("/admin/coupons")).data,
-  createCoupon: async (data: any) =>
+  createCoupon: async (data: unknown) =>
     (await api.post("/admin/coupons", data)).data,
   deleteCoupon: async (id: string) =>
     (await api.delete(`/admin/coupons/${id}`)).data,
   getBanners: async () => (await api.get("/admin/banners")).data,
-  createBanner: async (data: any) =>
+  createBanner: async (data: unknown) =>
     (await api.post("/admin/banners", data)).data,
   deleteBanner: async (id: string) =>
     (await api.delete(`/admin/banners/${id}`)).data,
-  updateSettings: async (data: any) =>
+  updateSettings: async (data: unknown) =>
     (await api.post("/admin/settings", data)).data,
 };

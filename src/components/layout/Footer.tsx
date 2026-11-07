@@ -1,12 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { CopyrightDate } from "@/components/copyright-date";
-import {
-  FacebookIcon,
-  Heart,
-  InstagramIcon,
-  YoutubeIcon,
-} from "@/components/icons";
+import { FacebookIcon, InstagramIcon, YoutubeIcon } from "@/components/icons";
 import { FooterMenu } from "@/components/layout/FooterMenu";
 import LogoSquare from "@/components/logo-square";
 import { siteConfig } from "@/config";
@@ -102,20 +97,9 @@ export async function Footer() {
         </Suspense>
       </div>
       <div className="border-t border-neutral-200 py-4 sm:py-6 text-xs sm:text-sm dark:border-neutral-800">
-        <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-2 px-4 md:flex-row min-[1320px]:px-0">
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-center text-center px-4 min-[1320px]:px-0">
           <p>
             &copy; <CopyrightDate /> {copyrightName}. সর্বস্বত্ব সংরক্ষিত।
-          </p>
-          <p className="flex items-center text-xs text-neutral-500">
-            Made with{" "}
-            <Heart className="inline size-3.5 text-rose-500 fill-rose-500 mx-1" />{" "}
-            by{" "}
-            <a
-              href="mailto:frostfoe@gmail.com"
-              className="ml-1 font-mono font-medium text-foreground hover:text-emerald-600 transition-colors"
-            >
-              &lt;/ Prohor &gt;
-            </a>
           </p>
         </div>
       </div>

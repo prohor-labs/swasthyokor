@@ -11,7 +11,10 @@ export async function Carousel() {
 
   if (!products?.length) return null;
 
-  const carouselProducts = [...products, ...products];
+  const carouselProducts = [
+    ...products.map((p) => ({ ...p, carouselKey: `orig-${p.id || p.handle}` })),
+    ...products.map((p) => ({ ...p, carouselKey: `dup-${p.id || p.handle}` })),
+  ];
 
   return (
     <div className="relative w-full overflow-hidden pb-4 sm:pb-6 pt-1">
@@ -21,9 +24,9 @@ export async function Carousel() {
 
       <div className="w-full overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
         <ul className="flex animate-carousel gap-3 sm:gap-4 px-3 sm:px-4 hover:[animation-play-state:paused]">
-          {carouselProducts.map((product, i) => (
+          {carouselProducts.map((product) => (
             <li
-              key={`${product.handle}-${i}`}
+              key={product.carouselKey}
               className="group relative h-[210px] sm:h-[260px] w-[68vw] max-w-[280px] sm:max-w-[340px] flex-none overflow-hidden rounded-2xl border-0 sm:border border-border/60 bg-muted/20 sm:bg-card transition-all duration-300 hover:border-emerald-500/50 hover:shadow-md sm:w-1/2 md:w-1/3 lg:w-1/4"
             >
               <ProductQuickView product={product} className="size-full">

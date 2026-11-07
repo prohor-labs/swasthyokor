@@ -10,16 +10,28 @@ import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { createCollectionAction } from "@/lib/actions/admin";
+import { compressImageClient } from "@/lib/image";
 
 export function CreateCollectionDialog() {
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
-    const formData = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const imageFile = formData.get("imageFile") as File | null;
+    if (
+      imageFile &&
+      imageFile.size > 0 &&
+      imageFile.type.startsWith("image/")
+    ) {
+      const compressed = await compressImageClient(imageFile);
+      formData.set("imageFile", compressed);
+    }
 
     startTransition(async () => {
       const res = await createCollectionAction(formData);
@@ -101,16 +113,17 @@ export function CreateCollectionDialog() {
 
           <Field>
             <FieldLabel
-              htmlFor="col-image"
+              htmlFor="col-image-file"
               className="text-xs sm:text-sm font-semibold text-foreground/90"
             >
-              ক্যাটাগরি ছবি (Image URL)
+              ক্যাটাগরি ছবি (S3 আপলোড)
             </FieldLabel>
             <Input
-              id="col-image"
-              name="image"
-              placeholder="https://... বা ছবির লিংক"
-              className="h-10 text-xs sm:text-sm px-3 rounded-lg sm:rounded-xl"
+              id="col-image-file"
+              name="imageFile"
+              type="file"
+              accept="image/*"
+              className="h-10 text-xs rounded-lg sm:rounded-xl file:mr-2.5 file:rounded-md file:border-0 file:bg-muted file:px-2 file:py-1 file:text-xs file:font-semibold"
             />
           </Field>
 

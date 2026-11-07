@@ -17,6 +17,9 @@ export default function Shell({ children, dict, lang }: ShellProps) {
   const router = useRouter();
   const { data: session } = useSession();
   const user = session?.user;
+  const userAvatar =
+    (user && "avatarUrl" in user ? (user.avatarUrl as string) : null) ||
+    user?.image;
   const initial = user?.name?.charAt(0).toUpperCase() || "U";
 
   const isLoginPage = pathname.startsWith("/login");
@@ -78,9 +81,9 @@ export default function Shell({ children, dict, lang }: ShellProps) {
                 onClick={() => setIsSidebarOpen(false)}
               >
                 <Avatar className="size-8">
-                  {(user as any)?.avatarUrl || (user as any)?.image ? (
+                  {userAvatar ? (
                     <AvatarImage
-                      src={(user as any)?.avatarUrl || (user as any)?.image}
+                      src={userAvatar}
                       alt={user?.name || "Profile"}
                       className="object-cover"
                     />

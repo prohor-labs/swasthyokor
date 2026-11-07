@@ -190,9 +190,9 @@ export function ManageOrderDialog({ order }: { order: AdminOrderItem }) {
             অর্ডারের আইটেমসমূহ ({order.items.length})
           </h4>
           <div className="max-h-48 overflow-y-auto space-y-1 divide-y divide-border/40 rounded-lg sm:rounded-xl border border-border bg-card p-2">
-            {order.items.map((item, idx) => (
+            {order.items.map((item) => (
               <div
-                key={`${item.productHandle}-${idx}`}
+                key={`${item.productHandle}-${item.variantTitle}`}
                 className="flex items-center justify-between pt-1.5 first:pt-0 text-xs sm:text-sm"
               >
                 <div className="min-w-0 flex-1 pr-2">
