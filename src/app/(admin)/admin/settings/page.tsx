@@ -1,9 +1,7 @@
-// drizzle-orm removed
 import { redirect } from "next/navigation";
 import { StoreSettingsForm } from "@/components/admin/StoreSettingsForm";
 import { getCurrentUser } from "@/lib/auth/session";
-import { db } from "@/lib/db";
-import { storeSettings } from "@/lib/db/schema";
+import { getStoreSettings } from "@/lib/db/queries";
 
 export const metadata = {
   title: "স্টোর সেটিংস | অ্যাডমিন",
@@ -16,24 +14,7 @@ export default async function AdminSettingsPage() {
     redirect("/login");
   }
 
-  let settings = await (await import("@/lib/api")).shopApi.getSettings();
-
-  if (!settings) {
-    [settings] = await db
-      .insert(storeSettings)
-      .values({
-        id: "default",
-        storeName: "স্বাস্থ্যকর",
-        storePhone: "+8801982027508",
-        whatsappNumber: "8801812345678",
-        storeEmail: "support@swasthyokor.com",
-        storeAddress: "ঢাকা, বাংলাদেশ",
-        insideDhakaFee: 60,
-        outsideDhakaFee: 120,
-        freeShippingMinAmount: 1500,
-      })
-      .returning();
-  }
+  const settings = await getStoreSettings();
 
   return (
     <div className="flex flex-col gap-6 max-w-5xl">
