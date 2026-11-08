@@ -28,6 +28,9 @@ for (const ep of envEndpoints) {
 const nextConfig: NextConfig = {
   experimental: {
     agentUpgrade: "security",
+    serverActions: {
+      bodySizeLimit: "10mb",
+    },
   },
   allowedDevOrigins: ["79.143.185.101"],
   typescript: {
