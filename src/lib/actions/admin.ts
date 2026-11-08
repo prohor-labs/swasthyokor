@@ -7,6 +7,7 @@ import { db } from "../db";
 import {
   blogs,
   collections,
+  coupons,
   heroBanners,
   orders,
   productCollections,
@@ -611,5 +612,68 @@ export async function updateStoreSettingsAction(formData: FormData) {
     return { success: true, error: "" };
   } catch (err: unknown) {
     return { success: false, error: err.message || "সেটিংস আপডেট ব্যর্থ হয়েছে।" };
+  }
+}
+
+export async function createCouponAction(data: {
+  code: string;
+  discountType: string;
+  discountValue: number;
+  minOrderAmount?: number;
+  maxDiscountAmount?: number | null;
+  usageLimit?: number | null;
+}) {
+  try {
+    await requireAdmin();
+    const code = data.code?.trim().toUpperCase();
+    if (!code) {
+      return { success: false, error: "কুপন কোড আবশ্যক।" };
+    }
+
+    const [newCoupon] = await db
+      .insert(coupons)
+      .values({
+        code,
+        discountType: data.discountType || "percentage",
+        discountValue: Number(data.discountValue) || 0,
+        minOrderAmount: Number(data.minOrderAmount) || 0,
+        maxDiscountAmount: data.maxDiscountAmount
+          ? Number(data.maxDiscountAmount)
+          : null,
+        usageLimit: data.usageLimit ? Number(data.usageLimit) : null,
+        isActive: true,
+      })
+      .returning();
+
+    revalidatePath("/admin/coupons");
+    return { success: true, error: "", coupon: newCoupon };
+  } catch (err: unknown) {
+    return { success: false, error: err.message || "কুপন তৈরি ব্যর্থ হয়েছে।" };
+  }
+}
+
+export async function toggleCouponActiveAction(id: string, isActive: boolean) {
+  try {
+    await requireAdmin();
+    await db.update(coupons).set({ isActive }).where(eq(coupons.id, id));
+
+    revalidatePath("/admin/coupons");
+    return { success: true, error: "" };
+  } catch (err: unknown) {
+    return {
+      success: false,
+      error: err.message || "কুপন স্ট্যাটাস পরিবর্তন ব্যর্থ হয়েছে।",
+    };
+  }
+}
+
+export async function deleteCouponAction(id: string) {
+  try {
+    await requireAdmin();
+    await db.delete(coupons).where(eq(coupons.id, id));
+    revalidatePath("/admin/coupons");
+    return { success: true, error: "" };
+  } catch (err: unknown) {
+    return { success: false, error: err.message || "কুপন মুছে ফেলা ব্যর্থ হয়েছে।" };
   }
 }

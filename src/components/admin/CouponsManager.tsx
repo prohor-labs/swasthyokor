@@ -23,6 +23,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  createCouponAction,
+  deleteCouponAction,
+  toggleCouponActiveAction,
+} from "@/lib/actions/admin";
 import type { Coupon } from "@/lib/db/schema";
 
 export function CouponsManager({
@@ -57,16 +62,22 @@ export function CouponsManager({
     setError("");
 
     try {
-      const res = await fetch("/api/admin/coupons", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+      const res = await createCouponAction({
+        code: formData.code,
+        discountType: formData.discountType,
+        discountValue: Number(formData.discountValue),
+        minOrderAmount: Number(formData.minOrderAmount) || 0,
+        maxDiscountAmount: formData.maxDiscountAmount
+          ? Number(formData.maxDiscountAmount)
+          : null,
+        usageLimit: formData.usageLimit ? Number(formData.usageLimit) : null,
       });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "কুপন তৈরি ব্যর্থ হয়েছে।");
+      if (!res.success || !res.coupon) {
+        throw new Error(res.error || "কুপন তৈরি ব্যর্থ হয়েছে।");
+      }
 
-      setCoupons((prev) => [data.coupon, ...prev]);
+      setCoupons((prev) => [res.coupon as Coupon, ...prev]);
       setIsOpen(false);
       setFormData({
         code: "",
@@ -85,13 +96,8 @@ export function CouponsManager({
 
   const handleToggleActive = async (id: string, currentStatus: boolean) => {
     try {
-      const res = await fetch("/api/admin/coupons", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, isActive: !currentStatus }),
-      });
-
-      if (res.ok) {
+      const res = await toggleCouponActiveAction(id, !currentStatus);
+      if (res.success) {
         setCoupons((prev) =>
           prev.map((c) =>
             c.id === id ? { ...c, isActive: !currentStatus } : c,
@@ -107,11 +113,8 @@ export function CouponsManager({
     if (!confirm("আপনি কি নিশ্চিতভাবে এই কুপনটি মুছে ফেলতে চান?")) return;
 
     try {
-      const res = await fetch(`/api/admin/coupons?id=${id}`, {
-        method: "DELETE",
-      });
-
-      if (res.ok) {
+      const res = await deleteCouponAction(id);
+      if (res.success) {
         setCoupons((prev) => prev.filter((c) => c.id !== id));
       }
     } catch (err) {
