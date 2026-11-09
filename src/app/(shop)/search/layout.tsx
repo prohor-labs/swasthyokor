@@ -31,7 +31,7 @@ export default function SearchLayout({
         {/* Right Sidebar: Sort By (Desktop only) */}
         <div className="hidden md:block w-44 lg:w-52 flex-none">
           <Suspense fallback={null}>
-            <FilterList list={sorting} title="সাজান (Sort by)" />
+            <FilterList list={sorting} title="সাজান" />
           </Suspense>
         </div>
       </div>

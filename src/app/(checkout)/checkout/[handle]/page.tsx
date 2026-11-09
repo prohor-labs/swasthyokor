@@ -90,8 +90,8 @@ export default async function CheckoutProductPage(props: {
               <div className="overflow-hidden rounded-[12px] sm:rounded-[14px] border border-border/80 bg-card shadow-xs">
                 {/* Table Header: PRODUCT / SUBTOTAL */}
                 <div className="flex items-center justify-between border-b border-border/80 bg-muted/40 px-4 py-3 sm:px-5 sm:py-3.5 text-xs sm:text-sm font-bold uppercase tracking-wider text-foreground">
-                  <span>পণ্য (PRODUCT)</span>
-                  <span>মোট (SUBTOTAL)</span>
+                  <span>পণ্য</span>
+                  <span>মোট</span>
                 </div>
 
                 {/* Product Item Row */}
@@ -148,7 +148,7 @@ export default async function CheckoutProductPage(props: {
                   </div>
 
                   <div className="flex items-center justify-between px-4 py-3 sm:px-5 sm:py-3.5 text-base sm:text-lg font-bold text-foreground bg-card">
-                    <span>সর্বমোট (Order Total)</span>
+                    <span>সর্বমোট</span>
                     <span className="text-emerald-600 dark:text-emerald-400 font-mono font-black text-lg sm:text-xl">
                       ৳{finalTotal.toLocaleString("bn-BD")}
                     </span>

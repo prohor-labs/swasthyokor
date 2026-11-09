@@ -75,7 +75,7 @@ export default async function OrderSuccessPage({
             {isCod ? (
               <div className="rounded-lg sm:rounded-xl border border-emerald-500/40 bg-emerald-500/10 p-3 sm:p-3.5 text-xs text-emerald-800 dark:text-emerald-300 space-y-1.5">
                 <p className="font-bold text-sm text-emerald-900 dark:text-emerald-200">
-                  ✓ ক্যাশ অন ডেলিভারি (Cash On Delivery)
+                  ✓ ক্যাশ অন ডেলিভারি
                 </p>
                 <p>
                   আমাদের একজন প্রতিনিধি খুব শীঘ্রই আপনার নম্বরে কল দিয়ে অর্ডারটি কনফার্ম
@@ -162,7 +162,7 @@ export default async function OrderSuccessPage({
                 <span>পেমেন্ট পদ্ধতি</span>
                 <span className="font-medium text-foreground">
                   {order.paymentMethod === "cod" || !order.paymentMethod
-                    ? "ক্যাশ অন ডেলিভারি (COD)"
+                    ? "ক্যাশ অন ডেলিভারি"
                     : `অনলাইন (${order.paymentMethod.toUpperCase()})`}
                 </span>
               </div>
@@ -175,7 +175,7 @@ export default async function OrderSuccessPage({
                       : "bg-amber-500/15 text-amber-700 dark:text-amber-300"
                   }`}
                 >
-                  {isPaid ? "পরিশোধিত (Paid)" : "পণ্য প্রাপ্তির পর পরিশোধযোগ্য"}
+                  {isPaid ? "পরিশোধিত" : "পণ্য প্রাপ্তির পর পরিশোধযোগ্য"}
                 </span>
               </div>
             </div>

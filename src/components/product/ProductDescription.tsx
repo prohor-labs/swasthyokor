@@ -124,7 +124,7 @@ export function ProductDescription({ product }: { product: Product }) {
                 )}
               />
               {!isAvailable
-                ? "স্টক শেষ (Out of Stock)"
+                ? "স্টক শেষ"
                 : isLowStock
                   ? `⚡ মাত্র ${stockQuantity}টি বাকি আছে!`
                   : `ইন স্টক (${stockQuantity}টি স্টকে আছে)`}

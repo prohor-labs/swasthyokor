@@ -16,14 +16,14 @@ import { getBlogs } from "@/lib/db/queries";
 import { baseUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "স্বাস্থ্য ও পুষ্টি গাইড (Health Blog) | স্বাস্থ্যকর",
+  title: "স্বাস্থ্য ও পুষ্টি গাইড | স্বাস্থ্যকর",
   description:
     "খাঁটি সুন্দরবন মধু, কাঠের ঘানির সরিষার তেল, ঘি ও অর্গানিক সুপারফুডের পুষ্টিগুণ, ব্যবহার বিধি ও বিশেষজ্ঞ স্বাস্থ্য টিপস।",
   alternates: {
     canonical: `${baseUrl}/blog`,
   },
   openGraph: {
-    title: "স্বাস্থ্য ও পুষ্টি গাইড (Health Blog) | স্বাস্থ্যকর",
+    title: "স্বাস্থ্য ও পুষ্টি গাইড | স্বাস্থ্যকর",
     description:
       "খাঁটি সুন্দরবন মধু, কাঠের ঘানির সরিষার তেল, ঘি ও অর্গানিক সুপারফুডের পুষ্টিগুণ, ব্যবহার বিধি ও বিশেষজ্ঞ স্বাস্থ্য টিপস।",
     url: `${baseUrl}/blog`,

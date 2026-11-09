@@ -352,7 +352,7 @@ export function EditProductDialog({
               htmlFor={`prod-handle-${product.id}`}
               className="text-xs sm:text-sm font-semibold text-foreground/90"
             >
-              হ্যান্ডেল (URL Slug) *
+              হ্যান্ডেল *
             </FieldLabel>
             <Input
               id={`prod-handle-${product.id}`}
@@ -386,22 +386,22 @@ export function EditProductDialog({
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectLabel>গণনা ভিত্তিক (Count / Container)</SelectLabel>
-                    <SelectItem value="jar">জার (Jar)</SelectItem>
-                    <SelectItem value="bottle">বোতল (Bottle)</SelectItem>
-                    <SelectItem value="piece">পিস (Piece)</SelectItem>
-                    <SelectItem value="packet">প্যাকেট (Packet)</SelectItem>
-                    <SelectItem value="box">বক্স (Box)</SelectItem>
+                    <SelectLabel>গণনা ভিত্তিক</SelectLabel>
+                    <SelectItem value="jar">জার</SelectItem>
+                    <SelectItem value="bottle">বোতল</SelectItem>
+                    <SelectItem value="piece">পিস</SelectItem>
+                    <SelectItem value="packet">প্যাকেট</SelectItem>
+                    <SelectItem value="box">বক্স</SelectItem>
                   </SelectGroup>
                   <SelectGroup>
-                    <SelectLabel>ওজন ভিত্তিক (Weight)</SelectLabel>
-                    <SelectItem value="gram">গ্রাম (Gram)</SelectItem>
-                    <SelectItem value="kg">কেজি (Kg)</SelectItem>
+                    <SelectLabel>ওজন ভিত্তিক</SelectLabel>
+                    <SelectItem value="gram">গ্রাম</SelectItem>
+                    <SelectItem value="kg">কেজি</SelectItem>
                   </SelectGroup>
                   <SelectGroup>
-                    <SelectLabel>ভলিউম / তরল (Volume)</SelectLabel>
+                    <SelectLabel>ভলিউম / তরল</SelectLabel>
                     <SelectItem value="ml">মি.লি. (ml)</SelectItem>
-                    <SelectItem value="litre">লিটার (Litre)</SelectItem>
+                    <SelectItem value="litre">লিটার</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -482,10 +482,8 @@ export function EditProductDialog({
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="true">ইন স্টক (In Stock)</SelectItem>
-                    <SelectItem value="false">
-                      স্টক শেষ (Out of Stock)
-                    </SelectItem>
+                    <SelectItem value="true">ইন স্টক</SelectItem>
+                    <SelectItem value="false">স্টক শেষ</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>

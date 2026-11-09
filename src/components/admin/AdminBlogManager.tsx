@@ -241,9 +241,7 @@ export function AdminBlogManager({
                   </Field>
 
                   <Field>
-                    <FieldLabel htmlFor="blog-slug">
-                      ইউআরএল স্ল্যাগ (Slug) *
-                    </FieldLabel>
+                    <FieldLabel htmlFor="blog-slug">ইউআরএল স্ল্যাগ *</FieldLabel>
                     <Input
                       id="blog-slug"
                       required
@@ -308,7 +306,7 @@ export function AdminBlogManager({
 
                 <Field>
                   <FieldLabel htmlFor="blog-description">
-                    সংক্ষিপ্ত বিবরণ (SEO Meta Description) *
+                    সংক্ষিপ্ত বিবরণ *
                   </FieldLabel>
                   <Textarea
                     id="blog-description"

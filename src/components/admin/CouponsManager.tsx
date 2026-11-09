@@ -358,7 +358,7 @@ export function CouponsManager({
                           : "bg-neutral-100 text-neutral-500 dark:bg-neutral-800"
                       }`}
                     >
-                      {coupon.isActive ? "সক্রিয় (Active)" : "নিষ্ক্রিয় (Off)"}
+                      {coupon.isActive ? "সক্রিয়" : "নিষ্ক্রিয়"}
                     </button>
                   </TableCell>
                   <TableCell className="text-right">

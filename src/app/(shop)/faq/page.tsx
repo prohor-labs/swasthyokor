@@ -20,16 +20,16 @@ import { getStoreSettings } from "@/lib/db/queries";
 import { baseUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "সচরাচর জিজ্ঞাসিত প্রশ্নাবলী (FAQ) | স্বাস্থ্যকর",
+  title: "সচরাচর জিজ্ঞাসিত প্রশ্নাবলী | স্বাস্থ্যকর",
   description:
-    "স্বাস্থ্যকর (SwasthyoKor) পণ্যের বিশুদ্ধতা, ডেলিভারি সিস্টেম, পেমেন্ট ও রিটার্ন সম্পর্কিত সকল প্রশ্নের স্পষ্ট উত্তর।",
+    "স্বাস্থ্যকর পণ্যের বিশুদ্ধতা, ডেলিভারি সিস্টেম, পেমেন্ট ও রিটার্ন সম্পর্কিত সকল প্রশ্নের স্পষ্ট উত্তর।",
   alternates: {
     canonical: `${baseUrl}/faq`,
   },
   openGraph: {
-    title: "সচরাচর জিজ্ঞাসিত প্রশ্নাবলী (FAQ) | স্বাস্থ্যকর",
+    title: "সচরাচর জিজ্ঞাসিত প্রশ্নাবলী | স্বাস্থ্যকর",
     description:
-      "স্বাস্থ্যকর (SwasthyoKor) পণ্যের বিশুদ্ধতা, ডেলিভারি সিস্টেম, পেমেন্ট ও রিটার্ন সম্পর্কিত সকল প্রশ্নের স্পষ্ট উত্তর।",
+      "স্বাস্থ্যকর পণ্যের বিশুদ্ধতা, ডেলিভারি সিস্টেম, পেমেন্ট ও রিটার্ন সম্পর্কিত সকল প্রশ্নের স্পষ্ট উত্তর।",
     url: `${baseUrl}/faq`,
     type: "website",
   },
@@ -67,11 +67,11 @@ export default async function FAQPage() {
             <span>সহায়তা কেন্দ্র & সাধারণ জিজ্ঞাসা</span>
           </Badge>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-            সচরাচর জিজ্ঞাসিত প্রশ্নাবলী (FAQ)
+            সচরাচর জিজ্ঞাসিত প্রশ্নাবলী
           </h1>
           <p className="text-xs sm:text-sm text-muted-foreground max-w-xl mx-auto leading-relaxed">
-            স্বাস্থ্যকর (SwasthyoKor) থেকে অর্ডার, পণ্যের গুণগত মান, ডেলিভারি ও লেনদেন
-            সংক্রান্ত সব তথ্যের স্পষ্ট উত্তর।
+            স্বাস্থ্যকর থেকে অর্ডার, পণ্যের গুণগত মান, ডেলিভারি ও লেনদেন সংক্রান্ত সব তথ্যের
+            স্পষ্ট উত্তর।
           </p>
         </div>
 

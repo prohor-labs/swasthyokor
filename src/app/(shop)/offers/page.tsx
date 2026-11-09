@@ -15,16 +15,16 @@ import type { Product } from "@/lib/types";
 import { baseUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "অফার ও ডিল | স্বাস্থ্যকর (SwasthyoKor)",
+  title: "অফার ও ডিল | স্বাস্থ্যকর",
   description:
-    "স্বাস্থ্যকর (SwasthyoKor)-এর চলমান ছাড়, বিশেষ অফার ও জনপ্রিয় পণ্যের সংগ্রহ এক জায়গায় দেখুন।",
+    "স্বাস্থ্যকর-এর চলমান ছাড়, বিশেষ অফার ও জনপ্রিয় পণ্যের সংগ্রহ এক জায়গায় দেখুন।",
   alternates: {
     canonical: `${baseUrl}/offers`,
   },
   openGraph: {
-    title: "অফার ও ডিল | স্বাস্থ্যকর (SwasthyoKor)",
+    title: "অফার ও ডিল | স্বাস্থ্যকর",
     description:
-      "স্বাস্থ্যকর (SwasthyoKor)-এর চলমান ছাড়, বিশেষ অফার ও জনপ্রিয় পণ্যের সংগ্রহ এক জায়গায় দেখুন।",
+      "স্বাস্থ্যকর-এর চলমান ছাড়, বিশেষ অফার ও জনপ্রিয় পণ্যের সংগ্রহ এক জায়গায় দেখুন।",
     url: `${baseUrl}/offers`,
     type: "website",
   },

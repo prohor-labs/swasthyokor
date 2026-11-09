@@ -224,7 +224,7 @@ export function AdminBannersManager({ banners }: { banners: HeroBanner[] }) {
                   লিঙ্ক: {banner.link}
                 </span>
                 <span className="text-[10px] text-emerald-600 font-bold">
-                  {banner.active ? "সক্রিয় (Active)" : "নিষ্ক্রিয়"}
+                  {banner.active ? "সক্রিয়" : "নিষ্ক্রিয়"}
                 </span>
               </div>
 

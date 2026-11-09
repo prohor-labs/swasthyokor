@@ -78,7 +78,7 @@ export async function Footer() {
                 href="/faq"
                 className="hover:text-foreground transition underline-offset-4 hover:underline"
               >
-                সচরাচর জিজ্ঞাসা (FAQ)
+                সচরাচর জিজ্ঞাসা
               </Link>
             </li>
           </ul>

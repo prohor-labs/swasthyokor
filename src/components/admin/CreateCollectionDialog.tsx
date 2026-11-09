@@ -85,7 +85,7 @@ export function CreateCollectionDialog() {
               htmlFor="col-handle"
               className="text-xs sm:text-sm font-semibold text-foreground/90"
             >
-              হ্যান্ডেল (URL Slug) *
+              হ্যান্ডেল *
             </FieldLabel>
             <Input
               id="col-handle"

@@ -107,7 +107,7 @@ export function CollectionsTable({
         <TableHeader>
           <TableRow>
             <TableHead className="px-5 py-4">কালেকশন</TableHead>
-            <TableHead className="px-4 py-4">হ্যান্ডেল (Slug)</TableHead>
+            <TableHead className="px-4 py-4">হ্যান্ডেল</TableHead>
             <TableHead className="px-4 py-4 text-center">
               হোমপেজ শোকেস
             </TableHead>
@@ -280,7 +280,7 @@ export function CollectionsTable({
                   htmlFor="edit-col-handle"
                   className="text-xs sm:text-sm font-semibold text-foreground/90"
                 >
-                  হ্যান্ডেল (URL Slug) *
+                  হ্যান্ডেল *
                 </FieldLabel>
                 <Input
                   id="edit-col-handle"

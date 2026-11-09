@@ -8,14 +8,14 @@ import { siteConfig } from "@/config";
 import { baseUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "যোগাযোগ | স্বাস্থ্যকর (SwasthyoKor)",
+  title: "যোগাযোগ | স্বাস্থ্যকর",
   description:
     "স্বাস্থ্যকর-এর সাথে সরাসরি যোগাযোগ করুন। ফোন, হোয়াটসঅ্যাপ, ইমেইল বা আমাদের ঠিকানায় বার্তা পাঠিয়ে যেকোনো তথ্য বা পরামর্শ নিন।",
   alternates: {
     canonical: `${baseUrl}/contact`,
   },
   openGraph: {
-    title: "যোগাযোগ | স্বাস্থ্যকর (SwasthyoKor)",
+    title: "যোগাযোগ | স্বাস্থ্যকর",
     description:
       "স্বাস্থ্যকর-এর সাথে সরাসরি যোগাযোগ করুন। ফোন, হোয়াটসঅ্যাপ, ইমেইল বা আমাদের ঠিকানায় বার্তা পাঠিয়ে যেকোনো তথ্য বা পরামর্শ নিন।",
     url: `${baseUrl}/contact`,

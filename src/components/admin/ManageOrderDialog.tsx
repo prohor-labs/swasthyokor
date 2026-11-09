@@ -161,7 +161,7 @@ export function ManageOrderDialog({ order }: { order: AdminOrderItem }) {
                   : "bg-amber-500/20 text-amber-700 dark:text-amber-300"
               }`}
             >
-              {isPaid ? "পরিশোধিত (Paid)" : "বকেয়া (Pending)"}
+              {isPaid ? "পরিশোধিত" : "বকেয়া"}
             </span>
           </div>
           {order.paymentTrxId ? (
@@ -234,16 +234,10 @@ export function ManageOrderDialog({ order }: { order: AdminOrderItem }) {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectItem value="confirmed">কনফার্মড (Confirmed)</SelectItem>
-                  <SelectItem value="shipped">
-                    ডেলিভারিতে পাঠানো হয়েছে (Shipped)
-                  </SelectItem>
-                  <SelectItem value="delivered">
-                    ডেলিভার্ড সম্পন্ন (Delivered)
-                  </SelectItem>
-                  <SelectItem value="cancelled">
-                    অর্ডার বাতিল (Cancelled)
-                  </SelectItem>
+                  <SelectItem value="confirmed">কনফার্মড</SelectItem>
+                  <SelectItem value="shipped">ডেলিভারিতে পাঠানো হয়েছে</SelectItem>
+                  <SelectItem value="delivered">ডেলিভার্ড সম্পন্ন</SelectItem>
+                  <SelectItem value="cancelled">অর্ডার বাতিল</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
