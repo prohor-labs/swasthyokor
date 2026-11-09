@@ -4,9 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DirectCheckoutForm } from "@/components/checkout/DirectCheckoutForm";
 import LogoSquare from "@/components/logo-square";
-import Price from "@/components/price";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { getCurrentUser } from "@/lib/auth/session";
 import { getProduct } from "@/lib/db/queries";
 
@@ -44,9 +42,7 @@ export default async function CheckoutProductPage(props: {
   const unitPrice = variant
     ? Number(variant.price.amount)
     : Number(product.priceRange.minVariantPrice.amount);
-  const currencyCode = "BDT";
   const finalTotal = unitPrice * quantity;
-  const quantityDisplay = `${quantity.toLocaleString("bn-BD")}টি প্যাক`;
 
   return (
     <div className="min-h-screen bg-neutral-50/60 dark:bg-neutral-950 py-5 px-3 sm:py-8 sm:px-6 lg:px-8 flex flex-col justify-between">
@@ -89,16 +85,19 @@ export default async function CheckoutProductPage(props: {
 
           {/* Right Column: Order Summary */}
           <div className="lg:col-span-5 space-y-4 sm:space-y-6">
-            <Card className="border-border/80 bg-card rounded-xl sm:rounded-2xl shadow-xs sticky top-8 py-0 gap-0 [--card-spacing:0px]">
-              <CardHeader className="px-4 pt-4 sm:px-6 sm:pt-5 pb-3 sm:pb-4">
-                <CardTitle className="text-sm sm:text-base font-bold text-foreground">
-                  অর্ডার সারাংশ
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="px-4 pb-4 sm:px-6 sm:pb-6 pt-1 sm:pt-2 space-y-3 sm:space-y-4">
-                {/* Product row */}
-                <div className="flex items-center gap-3">
-                  <div className="relative size-16 shrink-0 overflow-hidden rounded-xl border border-border/80 bg-neutral-100 dark:bg-neutral-900">
+            <div className="sticky top-8 space-y-4">
+              {/* Falaqfood Style "YOUR ORDER" Card */}
+              <div className="overflow-hidden rounded-[12px] sm:rounded-[14px] border border-border/80 bg-card shadow-xs">
+                {/* Table Header: PRODUCT / SUBTOTAL */}
+                <div className="flex items-center justify-between border-b border-border/80 bg-muted/40 px-4 py-3 sm:px-5 sm:py-3.5 text-xs sm:text-sm font-bold uppercase tracking-wider text-foreground">
+                  <span>পণ্য (PRODUCT)</span>
+                  <span>মোট (SUBTOTAL)</span>
+                </div>
+
+                {/* Product Item Row */}
+                <div className="flex items-start gap-3.5 px-4 py-4 sm:px-5 sm:py-4 border-b border-border/70 last:border-b-0">
+                  {/* Thumbnail */}
+                  <div className="relative size-[56px] sm:size-[64px] shrink-0 overflow-hidden rounded-md border border-border/80 bg-neutral-100 dark:bg-neutral-900">
                     {product.featuredImage?.url ? (
                       <Image
                         src={product.featuredImage.url}
@@ -109,62 +108,54 @@ export default async function CheckoutProductPage(props: {
                       />
                     ) : null}
                   </div>
-                  <div className="flex flex-col min-w-0 flex-1">
-                    <span className="text-sm font-semibold text-foreground line-clamp-1">
+
+                  {/* Title & Price Info */}
+                  <div className="flex min-w-0 flex-1 flex-col gap-1">
+                    <span className="line-clamp-2 text-xs sm:text-sm font-semibold text-foreground leading-snug">
                       {product.title}
                     </span>
-                    <span className="text-xs text-muted-foreground">
-                      পরিমাণ: {quantityDisplay}
-                    </span>
-                    <Price
-                      className="text-xs font-bold text-emerald-600 dark:text-emerald-400 mt-0.5"
-                      amount={unitPrice.toString()}
-                      currencyCode={currencyCode}
-                    />
+                    {variant?.title && variant.title !== "Default Title" ? (
+                      <span className="text-[11px] text-muted-foreground">
+                        {variant.title}
+                      </span>
+                    ) : null}
+
+                    <div className="mt-1 flex items-center justify-between gap-2">
+                      <span className="whitespace-nowrap text-xs text-muted-foreground font-mono">
+                        × {quantity} (৳{unitPrice.toLocaleString("bn-BD")})
+                      </span>
+                      <span className="whitespace-nowrap text-sm font-bold text-foreground font-mono">
+                        ৳{finalTotal.toLocaleString("bn-BD")}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
-                <Separator />
-
-                {/* Price calculations */}
-                <div className="space-y-2 text-xs">
-                  <div className="flex items-center justify-between text-muted-foreground">
-                    <span>পণ্যের মূল্য</span>
-                    <Price
-                      className="font-medium text-foreground"
-                      amount={finalTotal.toString()}
-                      currencyCode={currencyCode}
-                    />
+                {/* Subtotals & Fees */}
+                <div className="flex flex-col border-t border-border/80 bg-muted/20 text-xs sm:text-sm divide-y divide-border/60">
+                  <div className="flex items-center justify-between px-4 py-2.5 sm:px-5 sm:py-3 text-muted-foreground">
+                    <span>সাবটোটাল</span>
+                    <span className="font-semibold text-foreground font-mono">
+                      ৳{finalTotal.toLocaleString("bn-BD")}
+                    </span>
                   </div>
 
-                  <div className="flex items-center justify-between text-muted-foreground">
-                    <span>ভ্যাট ও ট্যাক্স</span>
-                    <Price
-                      className="font-medium text-foreground"
-                      amount="0"
-                      currencyCode={currencyCode}
-                    />
-                  </div>
-                  <div className="flex items-center justify-between text-muted-foreground">
+                  <div className="flex items-center justify-between px-4 py-2.5 sm:px-5 sm:py-3 text-muted-foreground">
                     <span>ডেলিভারি চার্জ</span>
                     <span className="font-semibold text-emerald-600 dark:text-emerald-400">
-                      ফ্রি
+                      ফ্রি ডেলিভারি
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between px-4 py-3 sm:px-5 sm:py-3.5 text-base sm:text-lg font-bold text-foreground bg-card">
+                    <span>সর্বমোট (Order Total)</span>
+                    <span className="text-emerald-600 dark:text-emerald-400 font-mono font-black text-lg sm:text-xl">
+                      ৳{finalTotal.toLocaleString("bn-BD")}
                     </span>
                   </div>
                 </div>
-
-                <Separator />
-
-                <div className="flex items-center justify-between pt-1">
-                  <span className="text-sm font-bold text-foreground">
-                    সর্বমোট
-                  </span>
-                  <span className="text-xl font-black text-emerald-600 dark:text-emerald-400 font-mono">
-                    ৳{finalTotal.toLocaleString("bn-BD")}
-                  </span>
-                </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
         </div>
       </div>
