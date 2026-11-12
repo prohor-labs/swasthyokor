@@ -313,7 +313,7 @@ export function ProductDescription({ product }: { product: Product }) {
 
         {/* ──── Section 7: Trust Badges ──── */}
         <div className="grid grid-cols-3 gap-2 pt-3 border-t border-border/25 text-center">
-          <div className="flex flex-col items-center justify-between rounded-xl p-2.5 bg-muted/20 min-h-[84px]">
+          <div className="flex flex-col items-center justify-between rounded-xl p-2.5 bg-muted/30 sm:bg-muted/20 min-h-[80px] sm:min-h-[84px]">
             <Truck className="size-4.5 text-emerald-600 shrink-0 mb-1" />
             <div className="flex flex-col gap-0.5 justify-center flex-1">
               <span className="text-[11px] font-bold text-foreground leading-tight">
@@ -324,7 +324,7 @@ export function ProductDescription({ product }: { product: Product }) {
               </span>
             </div>
           </div>
-          <div className="flex flex-col items-center justify-between rounded-xl p-2.5 bg-muted/20 min-h-[84px]">
+          <div className="flex flex-col items-center justify-between rounded-xl p-2.5 bg-muted/30 sm:bg-muted/20 min-h-[80px] sm:min-h-[84px]">
             <ShieldCheck className="size-4.5 text-emerald-600 shrink-0 mb-1" />
             <div className="flex flex-col gap-0.5 justify-center flex-1">
               <span className="text-[11px] font-bold text-foreground leading-tight">
@@ -335,7 +335,7 @@ export function ProductDescription({ product }: { product: Product }) {
               </span>
             </div>
           </div>
-          <div className="flex flex-col items-center justify-between rounded-xl p-2.5 bg-muted/20 min-h-[84px]">
+          <div className="flex flex-col items-center justify-between rounded-xl p-2.5 bg-muted/30 sm:bg-muted/20 min-h-[80px] sm:min-h-[84px]">
             <RestartSquare className="size-4.5 text-emerald-600 shrink-0 mb-1" />
             <div className="flex flex-col gap-0.5 justify-center flex-1">
               <span className="text-[11px] font-bold text-foreground leading-tight">

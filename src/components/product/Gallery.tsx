@@ -54,7 +54,7 @@ export function Gallery({
         <Carousel
           setApi={setApi}
           opts={{ loop: true }}
-          className="w-full overflow-hidden rounded-2xl md:rounded-3xl border border-border/60 bg-card shadow-xs"
+          className="w-full overflow-hidden rounded-xl sm:rounded-2xl md:rounded-3xl border border-border/60 bg-muted/20 sm:bg-card shadow-none sm:shadow-xs"
         >
           <CarouselContent className="ml-0">
             {images.map((image, index) => (

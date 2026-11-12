@@ -189,7 +189,7 @@ export default async function ProductPage(props: {
         }}
       />
       <div className="container-layout page-section-spacing">
-        <div className="flex flex-col border border-border/80 bg-card rounded-2xl p-4 sm:p-6 md:p-8 shadow-xs lg:flex-row lg:gap-10">
+        <div className="flex flex-col border-0 sm:border sm:border-border/80 bg-transparent sm:bg-card rounded-none sm:rounded-2xl p-0 sm:p-6 md:p-8 shadow-none sm:shadow-xs lg:flex-row lg:gap-10">
           <div className="size-full basis-full lg:basis-4/6">
             <Suspense
               fallback={
