@@ -203,6 +203,15 @@ export default async function ProductPage(props: {
                 }))}
               />
             </Suspense>
+
+            {/* Desktop Only: Long Description directly below the image */}
+            <div className="hidden lg:block">
+              <ProductLongDescription
+                descriptionHtml={product.descriptionHtml}
+                description={product.description}
+                className="mt-8"
+              />
+            </div>
           </div>
 
           <div className="basis-full pt-4 lg:pt-0 lg:basis-2/6">
@@ -211,12 +220,6 @@ export default async function ProductPage(props: {
             </Suspense>
           </div>
         </div>
-
-        {/* Long Description Tab Section (Falaq Food Style) */}
-        <ProductLongDescription
-          descriptionHtml={product.descriptionHtml}
-          description={product.description}
-        />
 
         {/* Customer Reviews & Ratings Section */}
         <ProductReviews

@@ -8,18 +8,20 @@ import { cn } from "@/lib/utils";
 interface ProductLongDescriptionProps {
   descriptionHtml?: string;
   description?: string;
+  className?: string;
 }
 
 export function ProductLongDescription({
   descriptionHtml,
   description,
+  className,
 }: ProductLongDescriptionProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   if (!descriptionHtml && !description) return null;
 
   return (
-    <section className="mt-8 md:mt-12" id="product-long-description">
+    <section className={cn("mt-6", className)} id="product-long-description">
       <div className="overflow-hidden rounded-2xl border border-border/80 bg-card shadow-xs">
         {/* Falaq Food Style Tab Header */}
         <div className="flex w-full items-start gap-10 bg-muted/40 px-4 sm:px-6 border-b border-border/50">

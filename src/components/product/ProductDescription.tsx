@@ -17,6 +17,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { useCart } from "@/hooks/use-cart";
 import type { Product } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { ProductLongDescription } from "./ProductLongDescription";
 import { VariantSelector } from "./VariantSelector";
 
 export function ProductDescription({ product }: { product: Product }) {
@@ -137,8 +138,8 @@ export function ProductDescription({ product }: { product: Product }) {
 
           {/* Short Description (Falaq Food Style) */}
           {product.shortDescription ? (
-            <div className="mt-2 text-xs sm:text-sm font-semibold text-emerald-600 dark:text-emerald-400 leading-relaxed">
-              <p className="m-0 font-bold">{product.shortDescription}</p>
+            <div className="mt-2 text-xs sm:text-sm font-normal text-emerald-700 dark:text-emerald-400 leading-relaxed">
+              <p className="m-0">{product.shortDescription}</p>
             </div>
           ) : null}
 
@@ -299,6 +300,15 @@ export function ProductDescription({ product }: { product: Product }) {
           <p className="text-[11px] text-center text-muted-foreground pt-1">
             🔒 ১০০% নিরাপদ অনলাইন পেমেন্ট (বিকাশ/নগদ/কার্ড) • ১০০% খাঁটি পণ্য নিশ্চয়তা
           </p>
+        </div>
+
+        {/* ──── Mobile Only: Long Description below Order Buttons ──── */}
+        <div className="block lg:hidden">
+          <ProductLongDescription
+            descriptionHtml={product.descriptionHtml}
+            description={product.description}
+            className="mt-2"
+          />
         </div>
 
         {/* ──── Section 7: Trust Badges ──── */}
