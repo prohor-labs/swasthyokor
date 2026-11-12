@@ -36,6 +36,11 @@ export function ShopBottomNav() {
   const isOffers = pathname === "/offers" || pathname.startsWith("/offers/");
   const isProfile =
     pathname.startsWith("/dashboard") || pathname.startsWith("/admin");
+  const isProductPage = pathname.startsWith("/product/");
+
+  if (isProductPage) {
+    return null;
+  }
   const profileHref = user
     ? user.isAdmin
       ? "/admin"

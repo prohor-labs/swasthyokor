@@ -22,60 +22,68 @@ export function ProductLongDescription({
 
   return (
     <section className={cn("mt-6", className)} id="product-long-description">
-      <div className="overflow-hidden rounded-2xl border border-border/80 bg-card shadow-xs">
-        {/* Falaq Food Style Tab Header */}
-        <div className="flex w-full items-start gap-10 bg-muted/40 px-4 sm:px-6 border-b border-border/50">
-          <div className="flex flex-col items-center justify-center gap-2 pt-3.5 pb-0">
-            <h2 className="m-0 whitespace-nowrap text-center text-sm sm:text-base font-bold text-foreground">
-              বিবরণ ও উপকারিতা
-            </h2>
-            <span
-              aria-hidden="true"
-              className="h-0.5 w-full rounded-full bg-emerald-600"
+      {/* Clean, Non-Carded Minimalist Design */}
+      <div className="relative">
+        <div
+          className={cn(
+            "transition-all duration-500 ease-in-out overflow-hidden",
+            !isExpanded ? "max-h-[280px] sm:max-h-[320px]" : "max-h-none",
+          )}
+        >
+          {descriptionHtml ? (
+            <Prose
+              className="max-w-none text-xs sm:text-sm md:text-base leading-relaxed sm:leading-loose text-foreground/90 prose-h2:text-base sm:prose-h2:text-lg prose-h2:font-bold prose-h2:text-foreground prose-h2:mt-5 sm:prose-h2:mt-6 prose-h2:mb-2.5 prose-p:my-2 prose-ul:my-2.5 prose-li:my-1"
+              html={descriptionHtml}
             />
-          </div>
-        </div>
-
-        {/* Content Body */}
-        <div className="flex flex-col gap-4 p-4 sm:p-6 md:p-8">
-          <div className="relative">
-            <div
-              className={cn(
-                "transition-all duration-300 overflow-hidden",
-                !isExpanded && "max-h-[360px]",
-              )}
-            >
-              {descriptionHtml ? (
-                <Prose
-                  className="max-w-none text-xs sm:text-sm md:text-base leading-relaxed sm:leading-loose text-foreground/90 prose-h2:text-lg sm:prose-h2:text-xl prose-h2:font-bold prose-h2:text-foreground prose-h2:mt-6 prose-h2:mb-3 prose-p:my-2.5 prose-ul:my-2.5 prose-li:my-1"
-                  html={descriptionHtml}
-                />
-              ) : (
-                <div className="text-xs sm:text-sm md:text-base leading-relaxed sm:leading-loose text-foreground/90 whitespace-pre-line">
-                  {description}
-                </div>
-              )}
+          ) : (
+            <div className="text-xs sm:text-sm md:text-base leading-relaxed sm:leading-loose text-foreground/90 whitespace-pre-line">
+              {description}
             </div>
-
-            {/* Gradient fade when collapsed */}
-            {!isExpanded && (
-              <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-card via-card/80 to-transparent pointer-events-none" />
-            )}
-          </div>
-
-          {/* Read More / Less Toggle Button */}
-          <div className="flex justify-center pt-2">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => setIsExpanded(!isExpanded)}
-              className="rounded-full border-border/80 text-xs font-semibold px-5 py-2 hover:bg-muted text-foreground"
-            >
-              {isExpanded ? "সংক্ষেপ করুন ▲" : "আরও পড়ুন ▼"}
-            </Button>
-          </div>
+          )}
         </div>
+
+        {/* Smooth Gradient Fade when collapsed */}
+        {!isExpanded && (
+          <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-background via-background/90 to-transparent pointer-events-none" />
+        )}
+      </div>
+
+      {/* Expand / Collapse Action Button */}
+      <div className="flex justify-center pt-3 border-t border-border/30 mt-3">
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => {
+            if (isExpanded) {
+              setIsExpanded(false);
+              document
+                .getElementById("product-long-description")
+                ?.scrollIntoView({ behavior: "smooth", block: "start" });
+            } else {
+              setIsExpanded(true);
+            }
+          }}
+          className="group rounded-full border-emerald-500/30 bg-emerald-500/5 hover:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-xs sm:text-sm font-semibold px-6 py-2 transition-all cursor-pointer flex items-center gap-1.5 shadow-2xs"
+        >
+          <span>{isExpanded ? "সংক্ষেপ করুন" : "সম্পূর্ণ বিবরণ পড়ুন"}</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            className={cn(
+              "size-4 transition-transform duration-200",
+              isExpanded ? "rotate-180" : "rotate-0",
+            )}
+            aria-hidden="true"
+          >
+            <path
+              fillRule="evenodd"
+              d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </Button>
       </div>
     </section>
   );

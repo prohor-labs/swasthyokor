@@ -72,9 +72,9 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
           </Link>
 
           {/* Short Truncated Description */}
-          {product.description && (
-            <p className="line-clamp-1 text-[11px] sm:text-xs text-muted-foreground font-normal leading-relaxed">
-              {product.description}
+          {(product.shortDescription || product.description) && (
+            <p className="line-clamp-2 text-[11px] sm:text-xs text-muted-foreground font-normal leading-relaxed">
+              {product.shortDescription || product.description}
             </p>
           )}
 

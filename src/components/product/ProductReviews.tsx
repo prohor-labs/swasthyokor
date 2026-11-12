@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Like, ShieldCheck } from "@/components/icons";
+import { Check, Like } from "@/components/icons";
 import { ResponsiveDialog } from "@/components/shared/ResponsiveDialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -168,11 +168,6 @@ export function ProductReviews({
               {totalReviews > 0
                 ? `মোট ${totalReviews.toLocaleString("bn-BD")}টি ভেরিফাইড রেটিং`
                 : "খাঁটি মান ও শতভাগ নিশ্চয়তা"}
-            </div>
-
-            <div className="mt-3 flex items-center gap-1.5 text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-3 py-1 rounded-full border border-emerald-200 dark:border-emerald-900">
-              <ShieldCheck className="size-3.5" />
-              <span>১০০% আসল ক্রেতাদের মতামত</span>
             </div>
           </div>
 
