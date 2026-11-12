@@ -59,6 +59,7 @@ export const products = pgTable(
     id: varchar("id", { length: 255 }).primaryKey(),
     handle: varchar("handle", { length: 255 }).notNull().unique(),
     title: varchar("title", { length: 255 }).notNull(),
+    shortDescription: text("short_description"),
     description: text("description").notNull(),
     descriptionHtml: text("description_html"),
     tags: jsonb("tags").$type<string[]>().notNull().default([]),

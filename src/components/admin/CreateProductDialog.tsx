@@ -564,15 +564,31 @@ export function CreateProductDialog({
 
           <Field>
             <FieldLabel
+              htmlFor="prod-short-desc"
+              className="text-xs sm:text-sm font-semibold text-foreground/90"
+            >
+              সংক্ষিপ্ত বিবরণ ও উপকারিতা
+            </FieldLabel>
+            <Textarea
+              id="prod-short-desc"
+              name="shortDescription"
+              rows={2}
+              placeholder="পণ্যের প্রধান উপকারিতা যা শিরোনামের ঠিক নিচে হাইলাইট হবে..."
+              className="text-xs sm:text-sm rounded-lg sm:rounded-xl"
+            />
+          </Field>
+
+          <Field>
+            <FieldLabel
               htmlFor="prod-desc"
               className="text-xs sm:text-sm font-semibold text-foreground/90"
             >
-              বিবরণ
+              বিস্তারিত বিবরণ
             </FieldLabel>
             <Textarea
               id="prod-desc"
               name="description"
-              rows={3}
+              rows={4}
               placeholder="পণ্য সম্পর্কিত বিস্তারিত বিবরণ..."
               className="text-xs sm:text-sm rounded-lg sm:rounded-xl"
             />

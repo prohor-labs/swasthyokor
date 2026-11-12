@@ -106,6 +106,7 @@ function toProduct(row: ProductRow): Product {
     id: row.id,
     handle: row.handle,
     title: row.title,
+    shortDescription: row.shortDescription || undefined,
     description: row.description,
     descriptionHtml:
       row.descriptionHtml ||

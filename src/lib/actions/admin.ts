@@ -55,6 +55,8 @@ export async function createProductAction(formData: FormData) {
       (formData.get("handle") as string)?.trim() ||
       title?.toLowerCase().replace(/[^a-z0-9]+/g, "-");
     const description = (formData.get("description") as string)?.trim() || "";
+    const shortDescription =
+      (formData.get("shortDescription") as string)?.trim() || null;
     const price = Number(formData.get("price") || 0);
     let imageUrl = (formData.get("imageUrl") as string)?.trim() || "";
     const imageFile = formData.get("image") as File | null;
@@ -89,6 +91,7 @@ export async function createProductAction(formData: FormData) {
       title,
       handle,
       description,
+      shortDescription,
       allowCoupons,
       createdAt: now,
       updatedAt: now,
@@ -137,6 +140,8 @@ export async function updateProductAction(formData: FormData) {
     const id = formData.get("id") as string;
     const title = (formData.get("title") as string)?.trim();
     const description = (formData.get("description") as string)?.trim() || "";
+    const shortDescription =
+      (formData.get("shortDescription") as string)?.trim() || null;
     const availableForSale = formData.get("availableForSale") === "true";
     const allowCoupons = formData.get("allowCoupons") !== "false";
     const collectionId = (formData.get("collectionId") as string) || null;
@@ -152,6 +157,7 @@ export async function updateProductAction(formData: FormData) {
       .set({
         title,
         description,
+        shortDescription,
         availableForSale,
         allowCoupons,
         updatedAt: now,

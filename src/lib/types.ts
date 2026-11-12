@@ -318,6 +318,7 @@ export type Product = {
   id: string;
   handle: string;
   title: string;
+  shortDescription?: string;
   description: string;
   descriptionHtml?: string;
   tags: string[];

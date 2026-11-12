@@ -51,6 +51,7 @@ export default async function AdminProductsPage() {
       title: prod.title,
       handle: prod.handle,
       description: prod.description,
+      shortDescription: prod.shortDescription || undefined,
       collectionId: prodCol?.collectionId,
       price: displayPrice,
       compareAtPrice: displayComparePrice,

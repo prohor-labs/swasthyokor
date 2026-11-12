@@ -136,6 +136,13 @@ export function ProductDescription({ product }: { product: Product }) {
             {product.title}
           </h1>
 
+          {/* Short Description (Falaq Food Style) */}
+          {product.shortDescription ? (
+            <div className="mt-2 text-xs sm:text-sm font-semibold text-emerald-700 dark:text-emerald-400 leading-relaxed bg-emerald-500/10 border border-emerald-500/20 px-3.5 py-2 rounded-xl">
+              <p className="m-0 font-medium">{product.shortDescription}</p>
+            </div>
+          ) : null}
+
           {/* Ratings & Reviews */}
           <div className="mt-2.5 flex items-center gap-3 flex-wrap text-xs">
             {product.rating && product.rating > 0 ? (
