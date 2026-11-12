@@ -95,7 +95,7 @@ export function ProductDescription({ product }: { product: Product }) {
 
   return (
     <>
-      <div className="flex flex-col gap-4 sm:gap-5 pb-24 md:pb-28 lg:pb-0">
+      <div className="flex flex-col gap-4 sm:gap-5 pb-6 lg:pb-0">
         {/* ──── Section 1: Product Header ──── */}
         <div className="flex flex-col border-b border-border/25 pb-4 sm:pb-5">
           {/* SKU & Stock */}
