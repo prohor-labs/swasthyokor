@@ -12,7 +12,6 @@ import {
   Truck,
   WhatsAppIcon,
 } from "@/components/icons";
-import { Prose } from "@/components/prose";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { useCart } from "@/hooks/use-cart";
@@ -138,8 +137,8 @@ export function ProductDescription({ product }: { product: Product }) {
 
           {/* Short Description (Falaq Food Style) */}
           {product.shortDescription ? (
-            <div className="mt-2 text-xs sm:text-sm font-semibold text-emerald-700 dark:text-emerald-400 leading-relaxed bg-emerald-500/10 border border-emerald-500/20 px-3.5 py-2 rounded-xl">
-              <p className="m-0 font-medium">{product.shortDescription}</p>
+            <div className="mt-2 text-xs sm:text-sm font-semibold text-emerald-600 dark:text-emerald-400 leading-relaxed">
+              <p className="m-0 font-bold">{product.shortDescription}</p>
             </div>
           ) : null}
 
@@ -244,18 +243,6 @@ export function ProductDescription({ product }: { product: Product }) {
             </span>
           )}
         </div>
-
-        {/* ──── Section 4: Description ──── */}
-        {product.descriptionHtml ? (
-          <Prose
-            className="text-xs sm:text-sm leading-relaxed sm:leading-loose text-muted-foreground/90"
-            html={product.descriptionHtml}
-          />
-        ) : product.description ? (
-          <div className="text-xs sm:text-sm leading-relaxed sm:leading-loose text-muted-foreground/90 whitespace-pre-line">
-            {product.description}
-          </div>
-        ) : null}
 
         {/* ──── Section 6: Desktop CTAs ──── */}
         <div className="hidden lg:flex flex-col gap-2.5 pt-2">

@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { Gallery, ProductDescription } from "@/components/product";
+import {
+  Gallery,
+  ProductDescription,
+  ProductLongDescription,
+} from "@/components/product";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   getProduct,
@@ -207,6 +211,12 @@ export default async function ProductPage(props: {
             </Suspense>
           </div>
         </div>
+
+        {/* Long Description Tab Section (Falaq Food Style) */}
+        <ProductLongDescription
+          descriptionHtml={product.descriptionHtml}
+          description={product.description}
+        />
 
         {/* Customer Reviews & Ratings Section */}
         <ProductReviews
