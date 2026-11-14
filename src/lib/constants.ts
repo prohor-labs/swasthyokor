@@ -41,3 +41,16 @@ export const sorting: SortFilterItem[] = [
 ];
 
 export const DEFAULT_OPTION = "Default Title";
+
+export const BANGLADESH_DIVISIONS = [
+  { id: "dhaka", nameBn: "ঢাকা বিভাগ", isDhaka: true },
+  { id: "chattogram", nameBn: "চট্টগ্রাম বিভাগ", isDhaka: false },
+  { id: "rajshahi", nameBn: "রাজশাহী বিভাগ", isDhaka: false },
+  { id: "khulna", nameBn: "খুলনা বিভাগ", isDhaka: false },
+  { id: "barishal", nameBn: "বরিশাল বিভাগ", isDhaka: false },
+  { id: "sylhet", nameBn: "সিলেট বিভাগ", isDhaka: false },
+  { id: "rangpur", nameBn: "রংপুর বিভাগ", isDhaka: false },
+  { id: "mymensingh", nameBn: "ময়মনসিংহ বিভাগ", isDhaka: false },
+] as const;
+
+export type DivisionId = (typeof BANGLADESH_DIVISIONS)[number]["id"];

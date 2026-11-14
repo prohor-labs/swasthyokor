@@ -18,10 +18,19 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
 import { siteConfig } from "@/config";
 import { checkoutDirectProduct } from "@/lib/actions/checkout";
 import { sendPhoneOtpAction, verifyPhoneOtpAction } from "@/lib/actions/otp";
+import { BANGLADESH_DIVISIONS, type DivisionId } from "@/lib/constants";
 import type { Product } from "@/lib/types";
 
 interface DirectCheckoutClientProps {
@@ -51,10 +60,13 @@ export function DirectCheckoutClient({
 }: DirectCheckoutClientProps) {
   const rawSubtotal = unitPrice * quantity;
 
-  // Delivery zone: inside_dhaka | outside_dhaka
-  const [deliveryZone, setDeliveryZone] = useState<
-    "inside_dhaka" | "outside_dhaka"
-  >("inside_dhaka");
+  // Selected Division: defaults to 'dhaka'
+  const [selectedDivision, setSelectedDivision] = useState<DivisionId>("dhaka");
+
+  // Derive deliveryZone automatically from selectedDivision:
+  // 'dhaka' => inside_dhaka, others => outside_dhaka
+  const deliveryZone =
+    selectedDivision === "dhaka" ? "inside_dhaka" : "outside_dhaka";
 
   // Coupon States
   const [isCouponOpen, setIsCouponOpen] = useState(false);
@@ -250,6 +262,7 @@ export function DirectCheckoutClient({
                 name="couponCode"
                 value={appliedCoupon ? appliedCoupon.code : ""}
               />
+              <input type="hidden" name="division" value={selectedDivision} />
               <input type="hidden" name="deliveryZone" value={deliveryZone} />
 
               {/* Customer Name */}
@@ -383,83 +396,57 @@ export function DirectCheckoutClient({
                 )}
               </div>
 
-              {/* Delivery Zone Selection (Falaq Food Style) */}
+              {/* Division Selection (Auto Delivery Charge Calculation) */}
               <div className="space-y-1.5 pt-0.5">
-                <Label className="text-xs sm:text-sm font-semibold text-foreground/90 flex items-center gap-1.5">
-                  <Truck className="size-4 text-emerald-600" />
-                  <span>ডেলিভারি এলাকা নির্বাচন করুন</span>
+                <Label
+                  htmlFor="division-select"
+                  className="text-xs sm:text-sm font-semibold text-foreground/90 flex items-center justify-between"
+                >
+                  <span className="flex items-center gap-1.5">
+                    <Truck className="size-4 text-emerald-600" />
+                    <span>আপনার বিভাগ নির্বাচন করুন</span>
+                  </span>
+                  <span className="text-[11px] font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                    ডেলিভারি চার্জ: {isFreeDelivery ? "ফ্রি" : `৳${deliveryCharge}`}
+                  </span>
                 </Label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setDeliveryZone("inside_dhaka")}
-                    className={`flex items-center justify-between p-3 rounded-xl border text-left transition-all cursor-pointer ${
-                      deliveryZone === "inside_dhaka"
-                        ? "border-emerald-600 bg-emerald-50/60 dark:bg-emerald-950/30 text-foreground ring-1 ring-emerald-600"
-                        : "border-border/80 bg-background hover:bg-muted/40 text-muted-foreground"
-                    }`}
-                  >
-                    <div className="flex items-center gap-2.5">
-                      <div
-                        className={`size-4 rounded-full border flex items-center justify-center ${
-                          deliveryZone === "inside_dhaka"
-                            ? "border-emerald-600 bg-emerald-600"
-                            : "border-muted-foreground/60"
-                        }`}
-                      >
-                        {deliveryZone === "inside_dhaka" && (
-                          <div className="size-1.5 rounded-full bg-white" />
-                        )}
-                      </div>
-                      <div>
-                        <p className="text-xs sm:text-sm font-bold text-foreground">
-                          ঢাকার ভেতরে
-                        </p>
-                        <p className="text-[10px] text-muted-foreground">
-                          ২৪-৪৮ ঘণ্টার মধ্যে হোম ডেলিভারি
-                        </p>
-                      </div>
-                    </div>
-                    <span className="text-xs sm:text-sm font-bold text-emerald-600 dark:text-emerald-400 font-mono">
-                      {isFreeDelivery ? "ফ্রি" : `৳${insideDhakaFee}`}
-                    </span>
-                  </button>
 
-                  <button
-                    type="button"
-                    onClick={() => setDeliveryZone("outside_dhaka")}
-                    className={`flex items-center justify-between p-3 rounded-xl border text-left transition-all cursor-pointer ${
-                      deliveryZone === "outside_dhaka"
-                        ? "border-emerald-600 bg-emerald-50/60 dark:bg-emerald-950/30 text-foreground ring-1 ring-emerald-600"
-                        : "border-border/80 bg-background hover:bg-muted/40 text-muted-foreground"
-                    }`}
+                <Select
+                  value={selectedDivision}
+                  onValueChange={(val) => {
+                    if (val) setSelectedDivision(val as DivisionId);
+                  }}
+                >
+                  <SelectTrigger
+                    id="division-select"
+                    className="w-full h-10 rounded-lg sm:rounded-xl bg-background text-sm font-medium"
                   >
-                    <div className="flex items-center gap-2.5">
-                      <div
-                        className={`size-4 rounded-full border flex items-center justify-center ${
-                          deliveryZone === "outside_dhaka"
-                            ? "border-emerald-600 bg-emerald-600"
-                            : "border-muted-foreground/60"
-                        }`}
-                      >
-                        {deliveryZone === "outside_dhaka" && (
-                          <div className="size-1.5 rounded-full bg-white" />
-                        )}
-                      </div>
-                      <div>
-                        <p className="text-xs sm:text-sm font-bold text-foreground">
-                          ঢাকার বাইরে
-                        </p>
-                        <p className="text-[10px] text-muted-foreground">
-                          ২-৩ কার্যদিবসে ক্যাশ অন ডেলিভারি
-                        </p>
-                      </div>
-                    </div>
-                    <span className="text-xs sm:text-sm font-bold text-emerald-600 dark:text-emerald-400 font-mono">
-                      {isFreeDelivery ? "ফ্রি" : `৳${outsideDhakaFee}`}
-                    </span>
-                  </button>
-                </div>
+                    <SelectValue placeholder="বিভাগ নির্বাচন করুন" />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-64">
+                    <SelectGroup>
+                      {BANGLADESH_DIVISIONS.map((div) => (
+                        <SelectItem key={div.id} value={div.id}>
+                          <div className="flex items-center justify-between w-full gap-4">
+                            <span>{div.nameBn}</span>
+                            <span className="text-xs text-muted-foreground font-mono">
+                              {isFreeDelivery
+                                ? "ফ্রি ডেলিভারি"
+                                : div.isDhaka
+                                  ? `৳${insideDhakaFee} (২৪-৪৮ ঘণ্টা)`
+                                  : `৳${outsideDhakaFee} (২-৩ দিন)`}
+                            </span>
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+                <p className="text-[10px] sm:text-[11px] text-muted-foreground">
+                  {selectedDivision === "dhaka"
+                    ? `* ঢাকা বিভাগে ডেলিভারি চার্জ ৳${insideDhakaFee} (২৪-৪৮ ঘণ্টার মধ্যে হোম ডেলিভারি)`
+                    : `* ঢাকার বাইরে ডেলিভারি চার্জ ৳${outsideDhakaFee} (২-৩ কার্যদিবসে ক্যাশ অন ডেলিভারি)`}
+                </p>
               </div>
 
               {/* Address */}
@@ -688,7 +675,11 @@ export function DirectCheckoutClient({
                 <div className="flex flex-col">
                   <span>ডেলিভারি চার্জ</span>
                   <span className="text-[10px] text-muted-foreground/80">
-                    {deliveryZone === "inside_dhaka" ? "ঢাকার ভেতরে" : "ঢাকার বাইরে"}
+                    {BANGLADESH_DIVISIONS.find((d) => d.id === selectedDivision)
+                      ?.nameBn ||
+                      (deliveryZone === "inside_dhaka"
+                        ? "ঢাকা বিভাগ"
+                        : "ঢাকার বাইরে")}
                   </span>
                 </div>
                 <span

@@ -97,10 +97,13 @@ export async function checkoutDirectProduct(formData: FormData): Promise<void> {
   const name = (formData.get("name") as string)?.trim() || "";
   const phone = (formData.get("phone") as string)?.trim() || "";
   const address = (formData.get("address") as string)?.trim() || "";
+  const division = (formData.get("division") as string)?.trim() || "dhaka";
   const deliveryZone =
-    (formData.get("deliveryZone") as string) === "outside_dhaka"
-      ? "outside_dhaka"
-      : "inside_dhaka";
+    division === "dhaka"
+      ? "inside_dhaka"
+      : (formData.get("deliveryZone") as string) === "inside_dhaka"
+        ? "inside_dhaka"
+        : "outside_dhaka";
   const couponCode =
     (formData.get("couponCode") as string)?.trim().toUpperCase() || "";
 
