@@ -421,14 +421,19 @@ export function DirectCheckoutClient({
                     id="division-select"
                     className="w-full h-10 rounded-lg sm:rounded-xl bg-background text-sm font-medium"
                   >
-                    <SelectValue placeholder="বিভাগ নির্বাচন করুন" />
+                    <SelectValue placeholder="বিভাগ নির্বাচন করুন">
+                      {(val: string | null) => {
+                        const matched = BANGLADESH_DIVISIONS.find((d) => d.id === val);
+                        return matched ? matched.nameBn : "বিভাগ নির্বাচন করুন";
+                      }}
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent className="max-h-64">
                     <SelectGroup>
                       {BANGLADESH_DIVISIONS.map((div) => (
-                        <SelectItem key={div.id} value={div.id}>
+                        <SelectItem key={div.id} value={div.id} label={div.nameBn}>
                           <div className="flex items-center justify-between w-full gap-4">
-                            <span>{div.nameBn}</span>
+                            <span className="font-medium text-foreground">{div.nameBn}</span>
                             <span className="text-xs text-muted-foreground font-mono">
                               {isFreeDelivery
                                 ? "ফ্রি ডেলিভারি"
