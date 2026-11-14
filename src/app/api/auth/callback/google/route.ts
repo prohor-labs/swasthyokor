@@ -136,6 +136,19 @@ export async function GET(req: NextRequest) {
     const destination = callbackUrl.startsWith("/")
       ? callbackUrl
       : "/dashboard";
+
+    // If user has never been onboarded and does not have an email password set, prompt optional onboarding
+    if (!user.onboardedAt) {
+      const emailAccount = await db.query.accounts.findFirst({
+        where: and(eq(accounts.userId, user.id), eq(accounts.provider, "email")),
+      });
+      if (!emailAccount?.passwordHash) {
+        return NextResponse.redirect(
+          new URL(`/onboarding?callbackUrl=${encodeURIComponent(destination)}`, req.url),
+        );
+      }
+    }
+
     return NextResponse.redirect(new URL(destination, req.url));
   } catch (err) {
     console.error("Google OAuth callback error:", err);

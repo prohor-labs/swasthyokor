@@ -1,8 +1,8 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { type NextRequest, NextResponse } from "next/server";
 import { createSession } from "@/lib/auth/session";
 import { db } from "@/lib/db";
-import { magicLinkTokens, users } from "@/lib/db/schema";
+import { accounts, magicLinkTokens, users } from "@/lib/db/schema";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -70,6 +70,18 @@ export async function GET(request: NextRequest) {
   const userAgent = request.headers.get("user-agent") || undefined;
 
   await createSession(user.id, { ip, userAgent });
+
+  // If user has never been onboarded and does not have an email password set, prompt optional onboarding
+  if (!user.onboardedAt) {
+    const emailAccount = await db.query.accounts.findFirst({
+      where: and(eq(accounts.userId, user.id), eq(accounts.provider, "email")),
+    });
+    if (!emailAccount?.passwordHash) {
+      return NextResponse.redirect(
+        new URL("/onboarding?callbackUrl=/dashboard", request.url),
+      );
+    }
+  }
 
   // Redirect to dashboard or returnUrl
   return NextResponse.redirect(new URL("/dashboard", request.url));

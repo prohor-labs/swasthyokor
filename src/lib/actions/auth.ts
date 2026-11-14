@@ -1,11 +1,11 @@
 "use server";
 
 import { randomBytes } from "node:crypto";
-import { verify } from "@node-rs/argon2";
+import { hash, verify } from "@node-rs/argon2";
 import { and, eq, lt } from "drizzle-orm";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { createSession, deleteCurrentSession } from "../auth/session";
+import { createSession, deleteCurrentSession, getCurrentUser } from "../auth/session";
 import { db } from "../db";
 import { accounts, magicLinkTokens, users } from "../db/schema";
 import { sendMagicLinkEmail } from "../email";
@@ -113,6 +113,71 @@ export async function loginWithPasswordAction(formData: FormData) {
   }
 
   await createSession(user.id);
+  return { success: true };
+}
+
+export async function setupUserPasswordAction(formData: FormData) {
+  const user = await getCurrentUser();
+  if (!user) {
+    return { success: false, error: "অননুমোদিত অ্যাক্সেস। অনুগ্রহ করে লগইন করুন।" };
+  }
+
+  const password = formData.get("password") as string;
+  const confirmPassword = formData.get("confirmPassword") as string;
+
+  if (!password || password.length < 6) {
+    return { success: false, error: "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।" };
+  }
+
+  if (password !== confirmPassword) {
+    return { success: false, error: "উভয় পাসওয়ার্ড মেলেনি।" };
+  }
+
+  const passwordHash = await hash(password, {
+    memoryCost: 19456,
+    timeCost: 2,
+    outputLen: 32,
+    parallelism: 1,
+  });
+
+  const existingEmailAccount = await db.query.accounts.findFirst({
+    where: and(eq(accounts.userId, user.id), eq(accounts.provider, "email")),
+  });
+
+  if (existingEmailAccount) {
+    await db
+      .update(accounts)
+      .set({ passwordHash })
+      .where(eq(accounts.id, existingEmailAccount.id));
+  } else {
+    await db.insert(accounts).values({
+      userId: user.id,
+      provider: "email",
+      providerAccountId: user.email,
+      passwordHash,
+    });
+  }
+
+  // Mark user as onboarded
+  await db
+    .update(users)
+    .set({ onboardedAt: new Date() })
+    .where(eq(users.id, user.id));
+
+  return { success: true, message: "পাসওয়ার্ড সফলভাবে সংরক্ষিত হয়েছে।" };
+}
+
+export async function skipOnboardingAction() {
+  const user = await getCurrentUser();
+  if (!user) {
+    return { success: false, error: "অননুমোদিত অ্যাক্সেস।" };
+  }
+
+  await db
+    .update(users)
+    .set({ onboardedAt: new Date() })
+    .where(eq(users.id, user.id));
+
   return { success: true };
 }
 

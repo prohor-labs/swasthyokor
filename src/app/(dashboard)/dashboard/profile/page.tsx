@@ -1,5 +1,6 @@
+import { and, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
-import { ProfileForm } from "@/components/dashboard";
+import { PasswordSettingsForm, ProfileForm } from "@/components/dashboard";
 import { ThemeToggler } from "@/components/theme-toggler";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -10,6 +11,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getCurrentUser } from "@/lib/auth/session";
+import { db } from "@/lib/db";
+import { accounts } from "@/lib/db/schema";
 
 export const metadata = {
   title: "প্রোফাইল ও সেটিংস | স্বাস্থ্যকর",
@@ -21,6 +24,11 @@ export default async function UserProfilePage() {
   if (!user) {
     redirect("/login?callbackUrl=/dashboard/profile");
   }
+
+  const emailAccount = await db.query.accounts.findFirst({
+    where: and(eq(accounts.userId, user.id), eq(accounts.provider, "email")),
+  });
+  const hasExistingPassword = Boolean(emailAccount?.passwordHash);
 
   return (
     <div className="flex flex-col gap-5 sm:gap-6 w-full max-w-4xl mx-auto">
@@ -34,6 +42,9 @@ export default async function UserProfilePage() {
           isAdmin: user.isAdmin,
         }}
       />
+
+      {/* Password Management */}
+      <PasswordSettingsForm hasExistingPassword={hasExistingPassword} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Theme Settings */}

@@ -340,6 +340,7 @@ export const users = pgTable("users", {
   phoneVerified: boolean("phone_verified").notNull().default(false),
   isBanned: boolean("is_banned").notNull().default(false),
   isAdmin: boolean("is_admin").notNull().default(false),
+  onboardedAt: timestamp("onboarded_at", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),
