@@ -698,18 +698,6 @@ export function DirectCheckoutClient({
                 </span>
               </div>
 
-              {freeShippingMinAmount > 0 &&
-                !isFreeDelivery &&
-                rawSubtotal < freeShippingMinAmount && (
-                  <div className="px-4 py-2 bg-emerald-500/5 text-[11px] text-emerald-700 dark:text-emerald-400">
-                    💡 আরও ৳
-                    {(freeShippingMinAmount - rawSubtotal).toLocaleString(
-                      "bn-BD",
-                    )}{" "}
-                    টাকার পণ্য অর্ডার করলেই পাচ্ছেন সম্পূর্ণ ফ্রি ডেলিভারি!
-                  </div>
-                )}
-
               <div className="flex items-center justify-between px-4 py-3 sm:px-5 sm:py-3.5 text-base sm:text-lg font-bold text-foreground bg-card">
                 <span>সর্বমোট</span>
                 <span className="text-emerald-600 dark:text-emerald-400 font-mono font-black text-lg sm:text-xl">
