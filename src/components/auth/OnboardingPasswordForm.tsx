@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { ShieldCheck, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { SubmitButton } from "@/components/submit-button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -67,10 +67,6 @@ export function OnboardingPasswordForm({
         </div>
 
         <div className="space-y-1">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-semibold mb-1">
-            <ShieldCheck className="size-4" />
-            অ্যাকাউন্ট নিরাপত্তা (ঐচ্ছিক)
-          </div>
           <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
             একটি পাসওয়ার্ড সেট করুন
           </h1>
