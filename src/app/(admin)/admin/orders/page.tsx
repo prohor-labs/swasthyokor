@@ -17,6 +17,8 @@ export default async function AdminOrdersPage() {
   const formattedOrders = allOrders.map((order) => ({
     id: order.id,
     totalAmount: order.totalAmount,
+    deliveryZone: order.deliveryZone,
+    deliveryCharge: order.deliveryCharge,
     totalCurrency: order.totalCurrency,
     status: order.status,
     paymentMethod: order.paymentMethod,

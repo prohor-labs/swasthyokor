@@ -38,6 +38,8 @@ export interface AdminOrderItem {
   paymentTrxId?: string | null;
   paymentSenderNumber?: string | null;
   totalAmount: number;
+  deliveryZone?: string | null;
+  deliveryCharge?: number | null;
   totalCurrency: string;
   status: string;
   createdAt: Date;
@@ -176,6 +178,27 @@ export function ManageOrderDialog({ order }: { order: AdminOrderItem }) {
             <span className="text-muted-foreground">বর্তমান স্ট্যাটাস:</span>
             <span>{getStatusBadge(order.status)}</span>
           </div>
+          {order.deliveryZone ? (
+            <div className="flex items-center justify-between">
+              <span className="text-muted-foreground">ডেলিভারি এলাকা:</span>
+              <span className="font-semibold text-foreground">
+                {order.deliveryZone === "inside_dhaka"
+                  ? "ঢাকার ভেতরে"
+                  : "ঢাকার বাইরে"}
+              </span>
+            </div>
+          ) : null}
+          {order.deliveryCharge !== undefined &&
+          order.deliveryCharge !== null ? (
+            <div className="flex items-center justify-between">
+              <span className="text-muted-foreground">ডেলিভারি চার্জ:</span>
+              <span className="font-bold text-foreground">
+                {order.deliveryCharge === 0
+                  ? "ফ্রি ডেলিভারি"
+                  : `৳${order.deliveryCharge}`}
+              </span>
+            </div>
+          ) : null}
           <div className="flex items-center justify-between border-t border-border/60 pt-2">
             <span className="font-bold text-foreground">সর্বমোট মূল্য:</span>
             <span className="font-bold text-sm sm:text-base text-emerald-600 dark:text-emerald-400">

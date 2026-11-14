@@ -437,6 +437,8 @@ export type Order = {
   paymentSenderNumber?: string | null;
   couponCode?: string | null;
   discountAmount?: number | null;
+  deliveryZone?: string | null;
+  deliveryCharge?: number | null;
   totalAmount: number;
   totalCurrency: string;
   status: string;

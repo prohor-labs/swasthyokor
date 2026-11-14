@@ -242,8 +242,8 @@ function CartSheet({
                 </div>
                 <div className="flex items-center justify-between text-muted-foreground text-xs">
                   <p>শিপিং চার্জ</p>
-                  <span className="font-semibold text-emerald-600 dark:text-emerald-400">
-                    ফ্রি
+                  <span className="font-semibold text-foreground">
+                    চেকআউটে নির্ধারিত
                   </span>
                 </div>
               </div>

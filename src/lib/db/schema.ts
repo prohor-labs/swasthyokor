@@ -287,6 +287,10 @@ export const orders = pgTable(
     paymentSenderNumber: varchar("payment_sender_number", { length: 50 }),
     couponCode: varchar("coupon_code", { length: 50 }),
     discountAmount: real("discount_amount").default(0),
+    deliveryZone: varchar("delivery_zone", { length: 50 }).default(
+      "inside_dhaka",
+    ),
+    deliveryCharge: real("delivery_charge").default(60),
     totalAmount: real("total_amount").notNull(),
     totalCurrency: varchar("total_currency", { length: 10 })
       .notNull()

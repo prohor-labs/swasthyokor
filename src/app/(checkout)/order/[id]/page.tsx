@@ -144,9 +144,26 @@ export default async function OrderSuccessPage({
 
             <div className="space-y-2 text-xs">
               <div className="flex items-center justify-between text-muted-foreground">
-                <span>ডেলিভারি চার্জ</span>
-                <span className="font-semibold text-emerald-600 dark:text-emerald-400">
-                  ফ্রি
+                <div className="flex flex-col">
+                  <span>ডেলিভারি চার্জ</span>
+                  {order.deliveryZone ? (
+                    <span className="text-[10px] text-muted-foreground/80">
+                      {order.deliveryZone === "inside_dhaka"
+                        ? "ঢাকার ভেতরে"
+                        : "ঢাকার বাইরে"}
+                    </span>
+                  ) : null}
+                </div>
+                <span
+                  className={`font-semibold ${
+                    order.deliveryCharge === 0
+                      ? "text-emerald-600 dark:text-emerald-400"
+                      : "text-foreground font-mono"
+                  }`}
+                >
+                  {order.deliveryCharge === 0
+                    ? "ফ্রি ডেলিভারি"
+                    : `৳${order.deliveryCharge || 60}`}
                 </span>
               </div>
               {order.couponCode &&

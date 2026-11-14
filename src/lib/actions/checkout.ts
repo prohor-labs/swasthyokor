@@ -13,6 +13,7 @@ import {
   orders,
   products,
   productVariants,
+  storeSettings,
 } from "../db/schema";
 
 export async function checkout(): Promise<void> {
@@ -27,7 +28,17 @@ export async function checkout(): Promise<void> {
   const user = await getCurrentUser();
   const now = new Date();
   const orderId = crypto.randomUUID();
-  const totalAmount = Number(cart.cost.totalAmount.amount);
+
+  // Fetch store settings for delivery fee
+  const settings = await db.query.storeSettings.findFirst({
+    where: eq(storeSettings.id, "default"),
+  });
+  const insideFee = settings?.insideDhakaFee ?? 60;
+  const freeThreshold = settings?.freeShippingMinAmount ?? 1500;
+  const rawSubtotal = Number(cart.cost.subtotalAmount.amount);
+  const isFreeDelivery = freeThreshold > 0 && rawSubtotal >= freeThreshold;
+  const deliveryCharge = isFreeDelivery ? 0 : insideFee;
+  const totalAmount = rawSubtotal + deliveryCharge;
   const totalCurrency = cart.cost.totalAmount.currencyCode;
 
   await db.insert(orders).values({
@@ -36,6 +47,8 @@ export async function checkout(): Promise<void> {
     customerName: user?.name || null,
     phone: user?.phone || null,
     shippingAddress: null,
+    deliveryZone: "inside_dhaka",
+    deliveryCharge,
     paymentMethod: "cod",
     paymentStatus: "pending",
     totalAmount,
@@ -84,6 +97,10 @@ export async function checkoutDirectProduct(formData: FormData): Promise<void> {
   const name = (formData.get("name") as string)?.trim() || "";
   const phone = (formData.get("phone") as string)?.trim() || "";
   const address = (formData.get("address") as string)?.trim() || "";
+  const deliveryZone =
+    (formData.get("deliveryZone") as string) === "outside_dhaka"
+      ? "outside_dhaka"
+      : "inside_dhaka";
   const couponCode =
     (formData.get("couponCode") as string)?.trim().toUpperCase() || "";
 
@@ -143,7 +160,24 @@ export async function checkoutDirectProduct(formData: FormData): Promise<void> {
     }
   }
 
-  const finalTotalAmount = Math.max(1, rawSubtotal - discountAmount);
+  // Fetch store settings for delivery fees
+  const settings = await db.query.storeSettings.findFirst({
+    where: eq(storeSettings.id, "default"),
+  });
+  const insideFee = settings?.insideDhakaFee ?? 60;
+  const outsideFee = settings?.outsideDhakaFee ?? 120;
+  const freeThreshold = settings?.freeShippingMinAmount ?? 1500;
+
+  const discountedSubtotal = Math.max(0, rawSubtotal - discountAmount);
+  const isFreeDelivery =
+    freeThreshold > 0 && discountedSubtotal >= freeThreshold;
+  const deliveryCharge = isFreeDelivery
+    ? 0
+    : deliveryZone === "outside_dhaka"
+      ? outsideFee
+      : insideFee;
+
+  const finalTotalAmount = Math.max(1, discountedSubtotal + deliveryCharge);
   const now = new Date();
   const orderId = crypto.randomUUID();
 
@@ -159,6 +193,8 @@ export async function checkoutDirectProduct(formData: FormData): Promise<void> {
     paymentStatus: "pending",
     couponCode: validatedCouponCode,
     discountAmount,
+    deliveryZone,
+    deliveryCharge,
     totalAmount: finalTotalAmount,
     totalCurrency: priceCurrency,
     status: "pending",

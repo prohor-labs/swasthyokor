@@ -650,6 +650,8 @@ export const getOrder = cache(async (id: string): Promise<Order | null> => {
     paymentSenderNumber: row.paymentSenderNumber,
     couponCode: row.couponCode,
     discountAmount: row.discountAmount,
+    deliveryZone: row.deliveryZone,
+    deliveryCharge: row.deliveryCharge,
     totalAmount: row.totalAmount,
     totalCurrency: row.totalCurrency,
     status: row.status,
