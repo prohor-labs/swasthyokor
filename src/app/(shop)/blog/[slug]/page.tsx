@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { MarkdownRenderer } from "@/components/blog";
 import { getBlog } from "@/lib/db/queries";
 import { baseUrl } from "@/lib/utils";
 
@@ -193,94 +194,8 @@ export default async function BlogPostPage(props: {
         </div>
 
         {/* Main Article Content */}
-        <article className="prose prose-neutral dark:prose-invert max-w-none text-foreground/90 leading-relaxed text-sm sm:text-base mb-10">
-          {(post.content || "").split("\n\n").map((para: string) => {
-            const cleanPara = para.trim();
-            if (!cleanPara) return null;
-
-            // 1. Markdown Image: ![Caption](url)
-            const imgMatch = cleanPara.match(/^!\[(.*?)\]\((.*?)\)$/);
-            if (imgMatch) {
-              const caption = imgMatch[1];
-              const imgUrl = imgMatch[2];
-              return (
-                <figure
-                  key={`img-${imgUrl}`}
-                  className="my-8 overflow-hidden rounded-2xl border border-border/60 bg-card p-3 shadow-xs not-prose"
-                >
-                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-muted">
-                    <Image
-                      src={imgUrl}
-                      alt={caption || post.title}
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 850px"
-                      className="object-cover"
-                    />
-                  </div>
-                  {caption && (
-                    <figcaption className="mt-3 text-center text-xs text-muted-foreground italic">
-                      {caption}
-                    </figcaption>
-                  )}
-                </figure>
-              );
-            }
-
-            // 2. Heading 2
-            if (cleanPara.startsWith("## ")) {
-              const text = cleanPara.replace("## ", "");
-              return (
-                <h2
-                  key={`h2-${text}`}
-                  className="text-xl sm:text-2xl font-bold mt-8 mb-4 text-foreground border-b border-border/40 pb-2"
-                >
-                  {text}
-                </h2>
-              );
-            }
-
-            // 3. Heading 3
-            if (cleanPara.startsWith("### ")) {
-              const text = cleanPara.replace("### ", "");
-              return (
-                <h3
-                  key={`h3-${text}`}
-                  className="text-lg sm:text-xl font-bold mt-6 mb-3 text-foreground"
-                >
-                  {text}
-                </h3>
-              );
-            }
-
-            // 4. Bullet lists
-            if (cleanPara.includes("1. **") || cleanPara.includes("- **")) {
-              return (
-                <div
-                  key={`list-${cleanPara.slice(0, 32)}`}
-                  className="my-3 space-y-2"
-                >
-                  {cleanPara.split("\n").map((item: string) => (
-                    <p
-                      key={`item-${item}`}
-                      className="leading-relaxed text-muted-foreground"
-                    >
-                      {item}
-                    </p>
-                  ))}
-                </div>
-              );
-            }
-
-            // 5. Standard paragraph
-            return (
-              <p
-                key={`p-${cleanPara.slice(0, 32)}`}
-                className="mb-4 text-muted-foreground leading-relaxed"
-              >
-                {cleanPara}
-              </p>
-            );
-          })}
+        <article className="mb-12">
+          <MarkdownRenderer content={post.content || ""} />
         </article>
 
         {/* Related Product Callout with shadcn Card & Button */}

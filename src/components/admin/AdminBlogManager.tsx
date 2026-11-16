@@ -25,6 +25,7 @@ import {
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { RichMarkdownEditor } from "@/components/blog";
 import {
   createBlogAction,
   deleteBlogAction,
@@ -206,7 +207,7 @@ export function AdminBlogManager({
             নতুন ব্লগ লিখুন
           </DialogTrigger>
 
-          <DialogContent className="max-w-4xl max-h-[92vh] overflow-y-auto rounded-3xl p-6 sm:p-8">
+          <DialogContent className="max-w-5xl max-h-[94vh] overflow-y-auto rounded-3xl p-6 sm:p-8">
             <DialogHeader className="pb-2">
               <DialogTitle className="text-xl font-bold flex items-center gap-2 text-foreground">
                 <BookOpen className="size-5 text-emerald-600" />
@@ -320,47 +321,15 @@ export function AdminBlogManager({
                 </Field>
 
                 <Field>
-                  <div className="flex items-center justify-between">
-                    <FieldLabel htmlFor="blog-content">
-                      সম্পূর্ণ কনটেন্ট (Markdown সমর্থিত) *
-                    </FieldLabel>
-                    <span className="text-[11px] text-muted-foreground font-mono">
-                      {content.length.toLocaleString("bn-BD")} অক্ষর |{" "}
-                      {content.trim()
-                        ? content
-                            .trim()
-                            .split(/\s+/)
-                            .length.toLocaleString("bn-BD")
-                        : 0}{" "}
-                      শব্দ
-                    </span>
-                  </div>
-                  <Textarea
+                  <FieldLabel htmlFor="blog-content">
+                    সম্পূর্ণ কনটেন্ট (Rehype Markdown ও লাইভ প্রিভিউ সমর্থিত) *
+                  </FieldLabel>
+                  <RichMarkdownEditor
                     id="blog-content"
-                    required
-                    rows={16}
                     value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                    onPaste={(e) => {
-                      const text = e.clipboardData.getData("text/plain");
-                      if (text) {
-                        e.preventDefault();
-                        const target = e.currentTarget;
-                        const start = target.selectionStart ?? 0;
-                        const end = target.selectionEnd ?? 0;
-                        const updated =
-                          content.substring(0, start) +
-                          text +
-                          content.substring(end);
-                        setContent(updated);
-                        setTimeout(() => {
-                          target.selectionStart = target.selectionEnd =
-                            start + text.length;
-                        }, 0);
-                      }
-                    }}
-                    placeholder="## মূল পয়েন্ট লিখুন...&#10;&#10;### বৈজ্ঞানিক উপকারিতা:&#10;1. প্রাকৃতিক অ্যান্টিঅক্সিডেন্ট..."
-                    className="rounded-xl bg-card p-4 text-sm text-foreground font-mono min-h-[360px] max-h-[600px] overflow-y-auto leading-relaxed focus-visible:ring-2 focus-visible:ring-ring"
+                    onChange={setContent}
+                    placeholder="ব্লগ কনটেন্ট লিখুন... Markdown, ছবি (![ক্যাপশন](url)), টেবিল এবং HTML সম্পূর্ণ সমর্থিত।"
+                    minHeight="460px"
                   />
                 </Field>
               </FieldGroup>
