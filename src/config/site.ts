@@ -27,9 +27,9 @@ export const siteConfig: SiteConfig = {
     "The Symbol of Faith and Trust. ১০০% খাঁটি সুন্দরবন মধু, কাঠের ঘানি ভাঙা তেল, গাওয়া ঘি ও অর্গানিক সুপারফুড।",
   url: process.env.NEXT_PUBLIC_APP_URL || "https://swasthyokor.com",
   supportEmail: "support@swasthyokor.com",
-  supportPhone: "01812345678",
-  whatsappNumber: "8801812345678",
-  address: "বাড়ি ১২, রোড ৪, ধানমন্ডি, ঢাকা - ১২০৫",
+  supportPhone: "+8801982027508",
+  whatsappNumber: "8801982027508",
+  address: "খুলনা, বাংলাদেশ",
   meta: {
     title: "স্বাস্থ্যকর | The Symbol of Faith and Trust",
     description:

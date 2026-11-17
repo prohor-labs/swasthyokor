@@ -74,7 +74,7 @@ export function ProductDescription({ product }: { product: Product }) {
     }
   };
 
-  const whatsappNumber = "8801812345678";
+  const whatsappNumber = "8801982027508";
   const whatsappOrderMsg = encodeURIComponent(
     `আসসালামু আলাইকুম, আমি স্বাস্থ্যকর থেকে "${product.title}" (${variant?.title || "ডিফল্ট"}) ${quantity}টি অর্ডার করতে চাই। মোট মূল্য: ৳${totalPrice}।`,
   );

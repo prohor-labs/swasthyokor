@@ -520,11 +520,11 @@ export const storeSettings = pgTable("store_settings", {
     .default("+8801982027508"),
   whatsappNumber: varchar("whatsapp_number", { length: 50 })
     .notNull()
-    .default("8801812345678"),
+    .default("8801982027508"),
   storeEmail: varchar("store_email", { length: 255 })
     .notNull()
     .default("support@swasthyokor.com"),
-  storeAddress: text("store_address").notNull().default("ঢাকা, বাংলাদেশ"),
+  storeAddress: text("store_address").notNull().default("খুলনা, বাংলাদেশ"),
   insideDhakaFee: real("inside_dhaka_fee").notNull().default(60),
   outsideDhakaFee: real("outside_dhaka_fee").notNull().default(120),
   freeShippingMinAmount: real("free_shipping_min_amount")

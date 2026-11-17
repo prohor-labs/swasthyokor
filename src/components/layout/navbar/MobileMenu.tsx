@@ -66,7 +66,7 @@ export default function MobileMenu({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const whatsappNumber = "8801812345678";
+  const whatsappNumber = "8801982027508";
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent("আসসালামু আলাইকুম, আমি স্বাস্থ্যকর থেকে পণ্য কিনতে চাই।")}`;
 
   return (
