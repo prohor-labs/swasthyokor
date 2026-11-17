@@ -50,7 +50,7 @@ export function AdminBlogManager({
   const [slug, setSlug] = useState("");
   const [category, setCategory] = useState("মধু ও পুষ্টি");
   const [readTime, setReadTime] = useState("৫ মিনিট");
-  const [author, setAuthor] = useState("স্বাস্থ্যকর নিউট্রিশন টিম");
+  const [author, setAuthor] = useState("স্বাস্থ্যকর");
   const [description, setDescription] = useState("");
   const [coverImage, setCoverImage] = useState("");
   const [coverImageFile, setCoverImageFile] = useState<File | null>(null);
@@ -61,7 +61,7 @@ export function AdminBlogManager({
     setSlug("");
     setCategory("মধু ও পুষ্টি");
     setReadTime("৫ মিনিট");
-    setAuthor("স্বাস্থ্যকর নিউট্রিশন টিম");
+    setAuthor("স্বাস্থ্যকর");
     setDescription("");
     setCoverImage("");
     setCoverImageFile(null);
@@ -283,7 +283,7 @@ export function AdminBlogManager({
                       id="blog-author"
                       value={author}
                       onChange={(e) => setAuthor(e.target.value)}
-                      placeholder="স্বাস্থ্যকর নিউট্রিশন টিম"
+                      placeholder="স্বাস্থ্যকর"
                       className="rounded-xl"
                     />
                   </Field>

@@ -130,16 +130,7 @@ export default async function BlogListingPage() {
                     </p>
                   </div>
 
-                  <div className="pt-4 border-t border-border/50 flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <div className="size-7 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center font-bold">
-                        <User className="size-3.5" />
-                      </div>
-                      <span className="font-medium text-foreground">
-                        {featuredPost.author}
-                      </span>
-                    </div>
-
+                  <div className="pt-4 border-t border-border/50 flex items-center justify-end">
                     <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-emerald-600 dark:text-emerald-400 group-hover:translate-x-1 transition-transform">
                       <span>সম্পূর্ণ পড়ুন</span>
                       <ArrowRight className="size-4" />
@@ -201,12 +192,7 @@ export default async function BlogListingPage() {
               </div>
 
               {/* Card Footer */}
-              <div className="px-5 py-3.5 border-t border-border/50 flex items-center justify-between bg-muted/15 mt-auto">
-                <span className="text-[11px] font-medium text-muted-foreground flex items-center gap-1">
-                  <BookOpen className="size-3 text-emerald-600" />
-                  <span>{post.author}</span>
-                </span>
-
+              <div className="px-5 py-3 border-t border-border/50 flex items-center justify-end bg-muted/10 mt-auto">
                 <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-600 dark:text-emerald-400 group-hover:translate-x-1 transition-transform">
                   <span>পড়ুন</span>
                   <ArrowRight className="size-3.5" />

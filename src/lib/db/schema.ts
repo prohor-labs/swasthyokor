@@ -196,7 +196,7 @@ export const blogs = pgTable(
     readTime: varchar("read_time", { length: 50 }).notNull().default("৫ মিনিট"),
     author: varchar("author", { length: 100 })
       .notNull()
-      .default("স্বাস্থ্যকর নিউট্রিশন টিম"),
+      .default("স্বাস্থ্যকর"),
     coverImage: text("cover_image").notNull(),
     inArticleImageUrl: text("in_article_image_url"),
     inArticleImageCaption: text("in_article_image_caption"),

@@ -176,9 +176,7 @@ export default async function BlogPostPage(props: {
 
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <ShieldCheck className="size-4 text-emerald-600 dark:text-emerald-400" />
-            <span>
-              লেখক ও গবেষক: <strong>{post.author}</strong>
-            </span>
+            <span>১০০% খাঁটি ও প্রাকৃতিক তথ্য</span>
           </div>
         </header>
 
