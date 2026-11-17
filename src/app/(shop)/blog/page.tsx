@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/card";
 import { getBlogs } from "@/lib/db/queries";
 import { baseUrl } from "@/lib/utils";
+import { getSafeBlogCover } from "@/lib/blog-utils";
 
 export const metadata: Metadata = {
   title: "স্বাস্থ্য ও পুষ্টি গাইড | স্বাস্থ্যকর",
@@ -84,7 +85,7 @@ export default async function BlogListingPage() {
                 className="relative aspect-video w-full overflow-hidden bg-muted block group"
               >
                 <Image
-                  src={post.coverImage}
+                  src={getSafeBlogCover(post.coverImage)}
                   alt={post.title}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

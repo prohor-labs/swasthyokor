@@ -87,17 +87,40 @@ export function MarkdownRenderer({ content, className }: MarkdownRendererProps) 
         ]}
         components={{
           img: ({ src, alt }) => {
-            if (!src || typeof src !== "string") return null;
+            if (!src || typeof src !== "string" || !src.trim()) return null;
+            const isExternal = src.startsWith("http://") || src.startsWith("https://");
+            
+            // If it is from a known domain or local, use next/image, otherwise use styled standard <img>
+            // to avoid next/image crashing on unconfigured external hosts
+            const isSafeNextHost =
+              !isExternal ||
+              src.includes("images.unsplash.com") ||
+              src.includes("picsum.photos") ||
+              src.includes("storage.prohor.dev") ||
+              src.includes("neon.tech") ||
+              src.includes("amazonaws.com") ||
+              src.includes("ghorerbazar.com");
+
             return (
               <figure className="my-6 overflow-hidden rounded-2xl border border-border/70 bg-card p-2 sm:p-3 shadow-xs not-prose">
                 <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-muted">
-                  <Image
-                    src={src}
-                    alt={alt || "Blog image"}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 850px"
-                    className="object-cover"
-                  />
+                  {isSafeNextHost ? (
+                    <Image
+                      src={src}
+                      alt={alt || "Blog image"}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 850px"
+                      className="object-cover"
+                    />
+                  ) : (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={src}
+                      alt={alt || "Blog image"}
+                      className="size-full object-cover"
+                      loading="lazy"
+                    />
+                  )}
                 </div>
                 {alt && (
                   <figcaption className="mt-2 text-center text-xs text-muted-foreground italic">

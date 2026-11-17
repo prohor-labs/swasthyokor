@@ -16,6 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import { MarkdownRenderer } from "@/components/blog";
 import { getBlog } from "@/lib/db/queries";
 import { baseUrl } from "@/lib/utils";
+import { getSafeBlogCover } from "@/lib/blog-utils";
 
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>;
@@ -184,7 +185,7 @@ export default async function BlogPostPage(props: {
         {/* Hero Cover Image */}
         <div className="relative aspect-video w-full overflow-hidden rounded-2xl bg-muted shadow-xs mb-8">
           <Image
-            src={post.coverImage}
+            src={getSafeBlogCover(post.coverImage)}
             alt={post.title}
             fill
             priority

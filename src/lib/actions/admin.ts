@@ -396,7 +396,22 @@ export async function createBlogAction(formData: FormData) {
     const content = (formData.get("content") as string)?.trim() || "";
     const category =
       (formData.get("category") as string)?.trim() || "স্বাস্থ্য ও পুষ্টি";
-    const coverImage = (formData.get("coverImage") as string)?.trim() || "";
+    let coverImage = (formData.get("coverImage") as string)?.trim() || "";
+
+    const imageFile = formData.get("imageFile") as File | null;
+    if (imageFile && imageFile.size > 0) {
+      try {
+        const ext = imageFile.name.split(".").pop() || "webp";
+        const buffer = Buffer.from(await imageFile.arrayBuffer());
+        coverImage = await uploadObject({
+          key: `blogs/${slug || Date.now()}-${Date.now()}.${ext}`,
+          body: buffer,
+          contentType: imageFile.type || "image/webp",
+        });
+      } catch (uploadErr) {
+        console.error("Failed to upload blog cover image:", uploadErr);
+      }
+    }
 
     if (!title || !slug) {
       return { success: false, error: "ব্লগ শিরোনাম এবং স্লাগ আবশ্যক।" };
@@ -432,7 +447,22 @@ export async function updateBlogAction(formData: FormData) {
     const content = (formData.get("content") as string)?.trim() || "";
     const category =
       (formData.get("category") as string)?.trim() || "স্বাস্থ্য ও পুষ্টি";
-    const coverImage = (formData.get("coverImage") as string)?.trim() || "";
+    let coverImage = (formData.get("coverImage") as string)?.trim() || "";
+
+    const imageFile = formData.get("imageFile") as File | null;
+    if (imageFile && imageFile.size > 0) {
+      try {
+        const ext = imageFile.name.split(".").pop() || "webp";
+        const buffer = Buffer.from(await imageFile.arrayBuffer());
+        coverImage = await uploadObject({
+          key: `blogs/${slug || id}-${Date.now()}.${ext}`,
+          body: buffer,
+          contentType: imageFile.type || "image/webp",
+        });
+      } catch (uploadErr) {
+        console.error("Failed to upload blog cover image:", uploadErr);
+      }
+    }
 
     if (!id || !title || !slug) {
       return { success: false, error: "আইডি, শিরোনাম এবং স্লাগ আবশ্যক।" };
