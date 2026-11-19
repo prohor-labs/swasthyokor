@@ -12,6 +12,7 @@ import {
   orders,
   productCollections,
   productImages,
+  productOptions,
   products,
   productVariants,
   storeSettings,
@@ -109,15 +110,83 @@ export async function createProductAction(formData: FormData) {
       });
     }
 
-    await db.insert(productVariants).values({
-      id: crypto.randomUUID(),
-      productId: id,
-      title: "স্ট্যান্ডার্ড প্যাক",
-      priceAmount: price,
-      inventoryQuantity: 15,
-      unit: "packet",
-      availableForSale: true,
-    });
+    const variantsJson = formData.get("variants") as string;
+    const rootUnit = (formData.get("unit") as string) || "packet";
+
+    if (variantsJson) {
+      try {
+        const variantsList = JSON.parse(variantsJson);
+        const optionValues: string[] = [];
+
+        for (let i = 0; i < variantsList.length; i++) {
+          const v = variantsList[i];
+          const variantTitle = v.title || "স্ট্যান্ডার্ড প্যাক";
+          optionValues.push(variantTitle);
+
+          await db.insert(productVariants).values({
+            id: crypto.randomUUID(),
+            productId: id,
+            title: variantTitle,
+            priceAmount: Number(v.price || price || 0),
+            compareAtPrice: v.compareAtPrice ? Number(v.compareAtPrice) : null,
+            inventoryQuantity: Number(v.inventoryQuantity ?? 15),
+            unit: v.unit || rootUnit,
+            position: i,
+            availableForSale: true,
+            selectedOptions: [
+              {
+                name: "পরিমাণ",
+                value: variantTitle,
+              },
+            ],
+          });
+        }
+
+        // Create or update product options for this product
+        if (optionValues.length > 0) {
+          await db.insert(productOptions).values({
+            id: crypto.randomUUID(),
+            productId: id,
+            name: "পরিমাণ",
+            position: 0,
+            values: optionValues,
+          });
+        }
+      } catch {
+        // Fallback if variants JSON parsing fails
+        await db.insert(productVariants).values({
+          id: crypto.randomUUID(),
+          productId: id,
+          title: "স্ট্যান্ডার্ড প্যাক",
+          priceAmount: price,
+          inventoryQuantity: 15,
+          unit: rootUnit,
+          availableForSale: true,
+          selectedOptions: [
+            {
+              name: "পরিমাণ",
+              value: "স্ট্যান্ডার্ড প্যাক",
+            },
+          ],
+        });
+      }
+    } else {
+      await db.insert(productVariants).values({
+        id: crypto.randomUUID(),
+        productId: id,
+        title: "স্ট্যান্ডার্ড প্যাক",
+        priceAmount: price,
+        inventoryQuantity: 15,
+        unit: rootUnit,
+        availableForSale: true,
+        selectedOptions: [
+          {
+            name: "পরিমাণ",
+            value: "স্ট্যান্ডার্ড প্যাক",
+          },
+        ],
+      });
+    }
 
     if (collectionId) {
       await db.insert(productCollections).values({
@@ -167,34 +236,59 @@ export async function updateProductAction(formData: FormData) {
     if (variantsJson) {
       try {
         const variantsList = JSON.parse(variantsJson);
-        for (const v of variantsList) {
+        const rootUnit = (formData.get("unit") as string) || "packet";
+        const optionValues: string[] = [];
+
+        for (let i = 0; i < variantsList.length; i++) {
+          const v = variantsList[i];
+          const variantTitle = v.title || "স্ট্যান্ডার্ড প্যাক";
+          optionValues.push(variantTitle);
+
+          const variantData = {
+            title: variantTitle,
+            priceAmount: Number(v.price || 0),
+            compareAtPrice: v.compareAtPrice
+              ? Number(v.compareAtPrice)
+              : null,
+            inventoryQuantity: Number(v.inventoryQuantity ?? 15),
+            unit: v.unit || rootUnit,
+            position: i,
+            availableForSale: true,
+            selectedOptions: [
+              {
+                name: "পরিমাণ",
+                value: variantTitle,
+              },
+            ],
+          };
+
           if (v.id) {
             await db
               .update(productVariants)
-              .set({
-                title: v.title,
-                priceAmount: Number(v.price || 0),
-                compareAtPrice: v.compareAtPrice
-                  ? Number(v.compareAtPrice)
-                  : null,
-                inventoryQuantity: Number(v.inventoryQuantity ?? 15),
-                unit: v.unit || "packet",
-              })
+              .set(variantData)
               .where(eq(productVariants.id, v.id));
           } else {
             await db.insert(productVariants).values({
               id: crypto.randomUUID(),
               productId: id,
-              title: v.title,
-              priceAmount: Number(v.price || 0),
-              compareAtPrice: v.compareAtPrice
-                ? Number(v.compareAtPrice)
-                : null,
-              inventoryQuantity: Number(v.inventoryQuantity ?? 15),
-              unit: v.unit || "packet",
-              availableForSale: true,
+              ...variantData,
             });
           }
+        }
+
+        // Sync product_options table for this product
+        await db
+          .delete(productOptions)
+          .where(eq(productOptions.productId, id));
+
+        if (optionValues.length > 0) {
+          await db.insert(productOptions).values({
+            id: crypto.randomUUID(),
+            productId: id,
+            name: "পরিমাণ",
+            position: 0,
+            values: optionValues,
+          });
         }
       } catch {
         // Ignored if json parse fails
