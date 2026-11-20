@@ -600,17 +600,22 @@ export async function updateBlogAction(formData: FormData) {
       return { success: false, error: "আইডি, শিরোনাম এবং স্লাগ আবশ্যক।" };
     }
 
+    const updateBlogData: Record<string, unknown> = {
+      title,
+      slug,
+      description,
+      content,
+      category,
+      updatedAt: new Date(),
+    };
+
+    if (coverImage) {
+      updateBlogData.coverImage = coverImage;
+    }
+
     await db
       .update(blogs)
-      .set({
-        title,
-        slug,
-        description,
-        content,
-        category,
-        coverImage,
-        updatedAt: new Date(),
-      })
+      .set(updateBlogData)
       .where(eq(blogs.id, id));
 
     revalidatePath("/admin/blog");
