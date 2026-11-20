@@ -383,7 +383,7 @@ export async function createCollectionAction(formData: FormData) {
     const handle = (formData.get("handle") as string)?.trim();
     const description = (formData.get("description") as string)?.trim();
     const subtitle = (formData.get("subtitle") as string)?.trim() || null;
-    const image = (formData.get("image") as string)?.trim();
+    let image = (formData.get("image") as string)?.trim() || "";
     const showOnHomepage = formData.get("showOnHomepage") === "true";
     const displayOrder = parseDisplayOrder(formData.get("displayOrder"));
 
@@ -392,6 +392,23 @@ export async function createCollectionAction(formData: FormData) {
     }
 
     const id = `col_${crypto.randomUUID().slice(0, 8)}`;
+
+    const imageFile = formData.get("imageFile") as File | null;
+    if (imageFile && imageFile.size > 0) {
+      try {
+        const ext = imageFile.name.split(".").pop() || "webp";
+        const key = `collections/${id}-${Date.now()}.${ext}`;
+        const buffer = Buffer.from(await imageFile.arrayBuffer());
+        image = await uploadObject({
+          key,
+          body: buffer,
+          contentType: imageFile.type || "image/webp",
+        });
+      } catch (uploadErr) {
+        console.error("Failed to upload collection image to S3:", uploadErr);
+      }
+    }
+
     await db.insert(collections).values({
       id,
       title,
@@ -407,7 +424,7 @@ export async function createCollectionAction(formData: FormData) {
     revalidatePath("/", "layout");
     return { success: true, error: "" };
   } catch (err: unknown) {
-    return { success: false, error: err.message || "ক্যাটাগরি তৈরি ব্যর্থ হয়েছে।" };
+    return { success: false, error: (err as Error).message || "ক্যাটাগরি তৈরি ব্যর্থ হয়েছে।" };
   }
 }
 
@@ -419,7 +436,7 @@ export async function updateCollectionAction(formData: FormData) {
     const handle = (formData.get("handle") as string)?.trim();
     const description = (formData.get("description") as string)?.trim() || "";
     const subtitle = (formData.get("subtitle") as string)?.trim() || null;
-    const image = (formData.get("image") as string)?.trim() || "";
+    let image = (formData.get("image") as string)?.trim() || "";
     const showOnHomepage = formData.get("showOnHomepage") === "true";
     const displayOrder = parseDisplayOrder(formData.get("displayOrder"));
 
@@ -427,25 +444,46 @@ export async function updateCollectionAction(formData: FormData) {
       return { success: false, error: "আইডি, শিরোনাম এবং হ্যান্ডেল আবশ্যক।" };
     }
 
+    const imageFile = formData.get("imageFile") as File | null;
+    if (imageFile && imageFile.size > 0) {
+      try {
+        const ext = imageFile.name.split(".").pop() || "webp";
+        const key = `collections/${id}-${Date.now()}.${ext}`;
+        const buffer = Buffer.from(await imageFile.arrayBuffer());
+        image = await uploadObject({
+          key,
+          body: buffer,
+          contentType: imageFile.type || "image/webp",
+        });
+      } catch (uploadErr) {
+        console.error("Failed to upload updated collection image to S3:", uploadErr);
+      }
+    }
+
+    const updateData: Record<string, unknown> = {
+      title,
+      handle,
+      description,
+      subtitle,
+      showOnHomepage,
+      displayOrder,
+      updatedAt: new Date(),
+    };
+
+    if (image) {
+      updateData.image = image;
+    }
+
     await db
       .update(collections)
-      .set({
-        title,
-        handle,
-        description,
-        subtitle,
-        image,
-        showOnHomepage,
-        displayOrder,
-        updatedAt: new Date(),
-      })
+      .set(updateData)
       .where(eq(collections.id, id));
 
     revalidatePath("/admin/collections");
     revalidatePath("/", "layout");
     return { success: true, error: "" };
   } catch (err: unknown) {
-    return { success: false, error: err.message || "ক্যাটাগরি আপডেট ব্যর্থ হয়েছে।" };
+    return { success: false, error: (err as Error).message || "ক্যাটাগরি আপডেট ব্যর্থ হয়েছে।" };
   }
 }
 
