@@ -6,5 +6,6 @@ export * from "./CollectionTabs";
 export * from "./FeatureBar";
 export * from "./FlashDealsSection";
 export * from "./HeroSection";
+export * from "./HomeBlogSection";
 export * from "./QuoteSection";
 export * from "./TrustFeaturesBar";

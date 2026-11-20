@@ -6,6 +6,7 @@ import {
   CollectionTabsSection,
   FlashDealsSection,
   HeroSection,
+  HomeBlogSection,
 } from "@/components/landing";
 
 import { Skeleton } from "@/components/ui/skeleton";
@@ -122,7 +123,12 @@ export default async function HomePage() {
           <CategoryShowcaseSection />
         </Suspense>
 
-        {/* 6. Continuous Auto-scrolling Product Carousel */}
+        {/* 6. Latest Blog & Health Guides */}
+        <Suspense fallback={null}>
+          <HomeBlogSection />
+        </Suspense>
+
+        {/* 7. Continuous Auto-scrolling Product Carousel */}
         <CollectionTabsSection />
       </div>
     </>
