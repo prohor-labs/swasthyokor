@@ -2,18 +2,20 @@ import Image from "next/image";
 import Link from "next/link";
 import Price from "@/components/price";
 import { ProductQuickView } from "@/components/product";
-import { getCollectionProducts } from "@/lib/db/queries";
+import { getProducts } from "@/lib/db/queries";
 
 export async function Carousel() {
-  const products = await getCollectionProducts({
-    collection: "hidden-homepage-carousel",
-  });
+  const allProducts = await getProducts();
 
-  if (!products?.length) return null;
+  if (!allProducts?.length) return null;
+
+  // Shuffle or slice available organic products so all items are showcased
+  const shuffled = [...allProducts].sort(() => 0.5 - Math.random());
+  const selectedProducts = shuffled.slice(0, 12);
 
   const carouselProducts = [
-    ...products.map((p) => ({ ...p, carouselKey: `orig-${p.id || p.handle}` })),
-    ...products.map((p) => ({ ...p, carouselKey: `dup-${p.id || p.handle}` })),
+    ...selectedProducts.map((p) => ({ ...p, carouselKey: `orig-${p.id || p.handle}` })),
+    ...selectedProducts.map((p) => ({ ...p, carouselKey: `dup-${p.id || p.handle}` })),
   ];
 
   return (
