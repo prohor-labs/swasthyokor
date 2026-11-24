@@ -11,14 +11,33 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, priority = false }: ProductCardProps) {
+  // Find the base/cheapest variant and match its specific discount,
+  // or take the most relevant variant discount strictly matching its own price
+  const primaryVariant = product.variants.find(
+    (v) => v.price.amount === product.priceRange.minVariantPrice.amount,
+  ) || product.variants[0];
+
   const currentPrice = Number(product.priceRange.minVariantPrice.amount);
-  const compareAtPrice = product.compareAtPriceRange?.minVariantPrice?.amount
-    ? Number(product.compareAtPriceRange.minVariantPrice.amount)
+  
+  // Calculate savings strictly per variant, prioritizing primary variant or best actual variant discount
+  const primaryCompare = primaryVariant?.compareAtPrice
+    ? Number(primaryVariant.compareAtPrice.amount)
     : undefined;
-  const savings =
-    compareAtPrice && compareAtPrice > currentPrice
-      ? compareAtPrice - currentPrice
-      : 0;
+  
+  const variantDiscount = primaryCompare && primaryCompare > currentPrice
+    ? primaryCompare - currentPrice
+    : product.variants.reduce((maxDisc, v) => {
+        const vPrice = Number(v.price.amount);
+        const vComp = Number(v.compareAtPrice?.amount ?? 0);
+        return vComp > vPrice ? Math.max(maxDisc, vComp - vPrice) : maxDisc;
+      }, 0);
+
+  const savings = variantDiscount;
+  const compareAtPrice = primaryCompare && primaryCompare > currentPrice
+    ? primaryCompare
+    : savings > 0
+      ? currentPrice + savings
+      : undefined;
 
   const ratingVal =
     product.rating && product.rating > 0 ? product.rating.toFixed(1) : "৫.০";
